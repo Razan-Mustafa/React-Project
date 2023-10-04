@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
+// import { useNavigate } from "react-router-dom";
+// import { createPortal } from "react-dom";
 import axios from "axios";
-import Modal from "./Modal";
+import Swal from "sweetalert2";
+import { useHistory } from 'react-router-dom';
 
 export default function Content() {
-    const [modalOpen, setModalOpen] = useState(false);
+    const history = useHistory();
     const [apiData, setApiData] = useState([]);
     const [userData, setUserData] = useState([]);
     const [doctorData, setDoctorData] = useState([]);
     const [doctorAvailableDays, setDoctorAvailableDays] = useState([]);
+    const [selectedDay, setSelectedDay] = useState("");
     const [doctorAvailableTimes, setDoctorAvailableTimes] = useState([]);
     const [doctorName, setDoctorName] = useState("");
     const [doctorPrice, setDoctorPrice] = useState("");
+    // const [isOpen, setIsOpen] = useState(false)
 
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        phone: "1111",
+        phone: "",
         gender: "",
-        bookingDay: null,
-        bookingTime: null,
+        bookingDay: "",
+        bookingTime: "",
         date: "",
         notes: ""
     });
@@ -66,21 +71,31 @@ export default function Content() {
     const getDoctorData = () => {
         axios
             .get(`https://651be95a194f77f2a5af127c.mockapi.io/Docfind/${category_id}`)
-            .then((getDoctorData) => {
-                setDoctorData(getDoctorData.data);
-                const doctor = doctorData && doctorData.doctors.find((doctor) => doctor.id === doctor_id);
-                const doctorAvailableDays = doctor.availableDays;
-                setDoctorAvailableDays(doctorAvailableDays);
-                const doctorAvailableTimes = doctor.availableTime;
-                setDoctorAvailableTimes(doctorAvailableTimes);
-                const doctorName = doctor.name;
-                setDoctorName(doctorName);
-                const doctorPrice = doctor.price;
-                setDoctorPrice(doctorPrice);
+            .then((response) => {
+                const doctorData = response.data;
+                setDoctorData(doctorData);
+                console.log(doctorData.doctors[0].name);
 
-                console.log(doctorPrice);
+                // Check if doctorData is defined before accessing its properties
+                if (doctorData) {
+                    const doctor = doctorData.doctors.find((doctor) => doctor.id === doctor_id);
+                    if (doctor) {
+                        const doctorAvailableDays = doctor.availableDays;
+                        setDoctorAvailableDays(doctorAvailableDays);
+                        const doctorAvailableTimes = doctor.availableTime;
+                        setDoctorAvailableTimes(doctorAvailableTimes);
+                        const doctorName = doctor.name;
+                        setDoctorName(doctorName);
+                        const doctorPrice = doctor.price;
+                        setDoctorPrice(doctorPrice);
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching doctor data:', error);
             });
     };
+
 
     /*----------------------------------------------Booking API----------------------------------------------*/
     const getData = () => {
@@ -118,6 +133,25 @@ export default function Content() {
                 setDoctorData(response.data);
             });
     }, []);
+
+
+    const handleDayChange = (e) => {
+        const selectedDay = e.target.value;
+        setSelectedDay(selectedDay);
+
+        const doctorForSelectedDay = doctorAvailableDays.find(
+            (dayObject) => dayObject.day === selectedDay
+        );
+
+        if (doctorForSelectedDay) {
+            const availableTimes = doctorForSelectedDay.times.filter((timeSlotObj) => !timeSlotObj.isBooked)
+                .map((timeSlotObj) => timeSlotObj.timeSlot);
+
+            setDoctorAvailableTimes(availableTimes);
+        } else {
+            setDoctorAvailableTimes([]);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -161,15 +195,68 @@ export default function Content() {
             date,
             notes,
         });
+
+        const timeSlot = bookingTime;
+        const updatedDoctor = {
+            ...doctorData,
+            doctors: doctorData.doctors.map((doc) => {
+                if (doc.id === doctor_id) {
+                    return {
+                        ...doc,
+                        availableDays: doc.availableDays.map((day) => {
+                            return {
+                                ...day,
+                                times: day.times.map((timeSlotObj) => {
+                                    if (timeSlotObj.timeSlot === timeSlot) {
+                                        return {
+                                            ...timeSlotObj,
+                                            isBooked: true,
+                                        };
+                                    }
+                                    return timeSlotObj;
+                                }),
+                            };
+                        }),
+                    };
+                }
+                return doc;
+            }),
+        };
+
+        const sendIsBooked = () => {
+            axios
+                .put(`https://651be95a194f77f2a5af127c.mockapi.io/Docfind/${category_id}`, updatedDoctor)
+        };
+
+        sendIsBooked();
+
+    };
+
+    const handleBothChanges = (e) => {
+        handleChange(e);
+        handleDayChange(e);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Perform any action with the form data here
+
         console.log(formData);
         resetForm();
         sendDataToAPI();
+
+        // navigate("/");
     };
+
+    const BtnClick = () => {
+        Swal.fire({
+            title: 'Your Book Submitted Successfully !',
+            customClass: {
+                confirmButton: 'custom-confirm-button-class'
+            }
+        }).then((result) => {
+            history.push('/');
+        });
+    }
 
     const resetForm = () => {
         setFormData({
@@ -177,12 +264,18 @@ export default function Content() {
             email: "",
             phone: "",
             gender: "",
-            bookingDay: 1,
-            bookingTime: 1,
+            bookingDay: null,
+            bookingTime: null,
             date: "",
             notes: ""
         });
+
+
     };
+    // const handleButtonClick = (value) => {
+    //     setModalOpen(false);
+    //     setMessage(value);
+    // };
 
 
     return (
@@ -232,13 +325,14 @@ export default function Content() {
                                         <div className="row">
                                             <div className="col-12">
                                                 <div className="form-group">
-                                                    <select name="bookingDay" value={bookingDay} onChange={handleChange}>
+                                                    <select name="bookingDay" value={bookingDay} onChange={handleBothChanges}>
                                                         <option value={1}>Select Day</option>
-                                                        {doctorAvailableDays && doctorAvailableDays.map((day, index) => (
-                                                            <option key={index} value={day}>
-                                                                {day}
-                                                            </option>
-                                                        ))}
+                                                        {doctorAvailableDays &&
+                                                            doctorAvailableDays.map((dayObject, index) => (
+                                                                <option key={index} value={dayObject.day}>
+                                                                    {dayObject.day}
+                                                                </option>
+                                                            ))}
                                                     </select>
                                                 </div>
                                             </div>
@@ -246,11 +340,13 @@ export default function Content() {
                                                 <div className="form-group">
                                                     <select name="bookingTime" value={bookingTime} onChange={handleChange}>
                                                         <option value={1}>Select Time</option>
-                                                        {doctorAvailableTimes && doctorAvailableTimes.map((time, index) => (
-                                                            <option key={index} value={time}>
-                                                                {time}
-                                                            </option>
-                                                        ))}
+                                                        {doctorAvailableTimes &&
+                                                            doctorAvailableTimes.map((time, index) => (
+                                                                <option key={index} value={time}>
+                                                                    {time}
+                                                                </option>
+                                                            ))}
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -322,13 +418,13 @@ export default function Content() {
                                             </li>
                                             <li className="d-flex align-items-center justify-content-between">
                                                 <span>Doctor Name</span>
-                                                <span>{doctorName && doctorName}</span>
+                                                <span>Dr. {doctorName && doctorName}</span>
                                             </li>
                                         </ul>
                                         <hr />
                                         <ul>
                                             <li className="d-flex align-items-center justify-content-between">
-                                                <span>Examination Cost 1</span>
+                                                <span>Examination Cost</span>
                                                 <span>{doctorPrice && doctorPrice} JOD</span>
                                             </li>
                                         </ul>
@@ -339,12 +435,25 @@ export default function Content() {
                                                 <span className="secondary-color"><b>{doctorPrice && doctorPrice} JOD</b></span>
                                             </li>
                                             <li className="popup d-flex align-items-center justify-content-between">
-                                                <button type="submit" className="openModalBtn sigma_btn btn-block btn-sm mt-4">
+                                                {/* <Link to="/"> */}
+                                                <button type="submit" className="sigma_btn btn-block btn-sm mt-4" style={{ fontSize: "17px", padding: "20px 70px" }} onClick={BtnClick}>
                                                     Confirm Booking
                                                     <i className="fal fa-arrow-right ml-3" />
                                                 </button>
-                                                {modalOpen && <Modal setOpenModal={setModalOpen} />}
-
+                                                {/* </Link> */}
+                                                {/* {modalOpen &&
+                                                    createPortal(
+                                                        <Modal
+                                                            closeModal={handleButtonClick}
+                                                            onSubmit={handleButtonClick}
+                                                            onCancel={handleButtonClick}
+                                                        >
+                                                            <h1>This is a modal</h1>
+                                                            <br />
+                                                            <p>This is the modal description</p>
+                                                        </Modal>,
+                                                        document.body
+                                                    )} */}
                                             </li>
                                         </ul>
                                     </div>

@@ -17094,3 +17094,8 @@ td.remove button span {
 #cancelBtn {
   background-color: crimson;
 }
+
+.custom-confirm-button-class {
+  background-color: #00acb1 !important;
+  color: white !important;
+}
