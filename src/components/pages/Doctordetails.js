@@ -21,6 +21,7 @@ class Doctordetails extends Component {
                 <Header />
                 <Breadcrumbs breadcrumb={{ pagename: pagelocation }} />
                 <Content
+                    catId={this.props.match.params.idcat}
                     detailId={this.props.match.params.id}
                 />
                 <Footer />
