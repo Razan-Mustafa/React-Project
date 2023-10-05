@@ -23,6 +23,7 @@ import Appointment from "./components/pages/Appointment";
 import Doctorgrid from "./components/pages/Doctorgrid";
 import Doctordetails from "./components/pages/Doctordetails";
 import Contact from "./components/pages/Contact";
+import AuthUser from "./components/pages/AuthUser";
 import Errorpage from "./components/pages/Errorpage";
 
 // Scroll to Top
@@ -71,14 +72,28 @@ function App() {
             <Route exact path="/faqs" component={Faqs} />
 
             {/* Appointment */}
-            <Route exact path="/appointment/:idcat/:id" component={Appointment} />
+            <Route
+              exact
+              path="/appointment/:idcat/:id"
+              component={Appointment}
+            />
 
            
             {/* Doctors */}
+            {/* <Route path="/doctor-grid" component={Doctorgrid} /> */}
+            {/* <Route exact path="/all-doctors/:id" component={Doctorgrid} /> */}
+            <Route
+              exact
+              path="/doctor-details/:idcat/:id"
+              component={Doctordetails}
+            />
             <Route exact path="/doctor-details/:idcat/:id" component={Doctordetails} />
 
             {/* Contact */}
             <Route exact path="/contact" component={Contact} />
+
+            {/* Reg & Login */}
+            <Route exact path="/authUser" component={AuthUser} />
 
             {/* Extra */}
             <Route exact path="/error-page" component={Errorpage} />
@@ -89,6 +104,5 @@ function App() {
     </Router>
   );
 }
-
 
 export default App;
