@@ -19,6 +19,8 @@ function Content() {
     const [showAllComments, setShowAllComments] = useState(false);
     const [Doctors, setDoctors] = useState([]);
 
+    const [reviewText, setReviewText] = useState('');
+    const [rating, setRating] = useState(5);
 
     useEffect(() => {
         axios
@@ -27,6 +29,58 @@ function Content() {
           .catch((error) => console.error(error));
       }, []);
 
+
+      const handleReviewTextChange = (e) => {
+        setReviewText(e.target.value);
+      };
+    
+      const handleRatingChange = (e) => {
+        setRating(parseInt(e.target.value, 10));
+      };
+    
+      const handleReviewSubmit = (e) => {
+        e.preventDefault();
+        
+        // review object
+        const newReview = {
+          user: {
+            name: 'User Name',
+            id: 123,
+          },
+          rating: rating,
+          comment: reviewText,
+          commentdate: new Date().toLocaleDateString(),
+        };
+    
+        // Add the new review to the doctor's reviews array
+        filteredItem.doctors[0].reviews.push(newReview);
+        // const filteredItem = Doctors.find((item) => item.id === doctorid );
+
+        // Clear the form inputs
+        setReviewText('');
+        setRating(5); // Reset rating to 5 or your default rating
+    
+        // You can also send the new review data to your server/API here if needed
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
       const filteredItem = Doctors.find((item) => item.id === doctorid );
 
       return(filteredItem ? (
@@ -42,7 +96,7 @@ function Content() {
                         <div className="row no-gutters">
                           <div className="col-md-4">
                             <div className="sigma_team-thumb">
-                              <img src={`${Doc.image}`} alt={Doc.name} />
+                              <img src={process.env.PUBLIC_URL + `/assets/img/`+ Doc.image} alt={Doc.name} />
                             </div>
                           </div>
                           <div className="col-md-8">
@@ -124,13 +178,10 @@ function Content() {
                         {/* Data */}
                         {Doc.reviews.slice(0, showAllComments ? Doc.reviews.length : 2).map(Review =>(
                         <>
-                        <h5>
-                           {Review.user.name}
-                        </h5>
                           <div className="sigma_testimonial style-14" key={Review.user.id}>
                             
                               <div className="sigma_testimonial-thumb" key={Review.user.id}>
-                                <img src={process.env.PUBLIC_URL + "/" + Review.image} alt={Review.user.name} />
+                                <img src={process.env.PUBLIC_URL + `/assets/img/`+ Review.user.image} alt={Review.user.name} />
                               </div>                        
                               <div className="sigma_testimonial-body" key={Review.user.id}>
                                 <div className="d-flex align-items-center justify-content-between">
@@ -174,7 +225,37 @@ function Content() {
                             </button>
                             )}
                       </div>
-                      
+
+
+                      {/* Review form ****************************************/}
+                      <div className="container">
+                        <br/>
+                        <h4>Add a Review</h4>
+                        <form onSubmit={handleReviewSubmit}>
+                          <div className="form-group">
+                            <label>Rating:</label>
+                            <select value={rating} onChange={handleRatingChange}>
+                              <option value={1}>1</option>
+                              <option value={2}>2</option>
+                              <option value={3}>3</option>
+                              <option value={4}>4</option>
+                              <option value={5}>5</option>
+                            </select>
+                          </div>
+                          <div className="form-group">
+                            <label>Review:</label>
+                            <textarea
+                              rows="4"
+                              value={reviewText}
+                              onChange={handleReviewTextChange}
+                              required
+                            ></textarea>
+                          </div>
+                          <button type="submit">Submit Review</button>
+                        </form>
+                      </div>
+    
+  
                     </div>
                   </div>
                 </div>
@@ -183,9 +264,9 @@ function Content() {
                   <div className="sidebar style-10 mt-5 mt-lg-0">
                     {/* form Widget */}
                     <div className="widget widget-form">
-                      <h5 className="widget-title">Booking Summary</h5>
+                      <h5 className="widget-title">Summary</h5>
                       <div className="widget-inner">
-                        <form>
+                        {/* <form>
                           <label>Date</label>
                           <div className="form-group">
                             <i className="fal fa-calendar-alt" />
@@ -196,42 +277,45 @@ function Content() {
                             <i className="far fa-clock" />
                             <input type="text" name="time" placeholder="08:30 PM" />
                           </div>
-                        </form>
+                        </form> */}
                       </div>
                       <hr />
                       <div className="widget-inner widget-service">
+
                         <form>
                           <div className="form-group">
-                            <label>Choose Service</label>
+                            {/* <label>Service</label> */}
                             <ul>
                               <li className="d-flex justify-content-between mb-3">
                                 <div className="d-flex">
                                   <input type="checkbox" id="checkbox" name="checkbox" />
-                                  <label className="mb-0" htmlFor="checkbox">Lorem ipsum dolor</label>
+                                  <label className="mb-0" htmlFor="checkbox">Service Price</label>
                                 </div>
-                                <span>$80</span>
+                                <span>{Doc.price}</span>
                               </li>
                               <li className="d-flex justify-content-between mb-3">
                                 <div className="d-flex">
                                   <input type="checkbox" id="checkbox1" name="checkbox" />
                                   <label className="mb-0" htmlFor="checkbox1">Lorem ipsum dolor</label>
                                 </div>
-                                <span>$80</span>
+                                <span>{Doc.price}</span>
                               </li>
                               <li className="d-flex justify-content-between">
                                 <div className="d-flex">
                                   <input type="checkbox" id="checkbox2" name="checkbox" />
                                   <label className="mb-0" htmlFor="checkbox2">Lorem ipsum dolor</label>
                                 </div>
-                                <span>$80</span>
+                                <span>{Doc.price}</span>
                               </li>
                             </ul>
                           </div>
+
                           <Link to="/appointment" className="sigma_btn btn-block btn-sm">
                             Book Appointment
                             <i className="fal fa-arrow-right ml-3" />
                           </Link>
                         </form>
+
                       </div>
                     </div>
                   </div>
