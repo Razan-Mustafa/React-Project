@@ -1,105 +1,113 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import doctorpost from '../../../data/doctor/doctor.json';
-import { getFilteredPosts } from '../../../helper/doctorHelper';
-import { Rating } from '../../../helper/helper';
-import Sidebar from '../../layouts/Doctorsidebar';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import Sidebar from "../../layouts/Doctorsidebar";
 import Pagination from "react-js-pagination";
 
-class Content extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: this.getPosts(),
-            activePage: 1,
-            itemPerpage: 4,
-            favorite: false
-        }
-        this.favoriteTrigger = this.favoriteTrigger.bind(this);
-    }
-    getPosts() {
-        var cat = this.props.catId ? this.props.catId : '';
-        var filteredItems = getFilteredPosts(doctorpost, { cat });
-        return filteredItems;
-    }
-    handlePageChange(pageNumber) {
-        this.setState({ activePage: pageNumber });
-    }
-    favoriteTrigger(item) {
-        this.setState({ favorite: item });
-        if (this.state.favorite === item) {
-            this.setState({ favorite: null })
-        }
-    }
-    render() {
-        const paginationData = this.state.data.slice((this.state.activePage - 1) * this.state.itemPerpage, this.state.activePage * this.state.itemPerpage).map((item, i) => {
-            return <div className="col-lg-6 col-md-6" key={i}>
-                <div className="sigma_team style-16">
-                    <div className="sigma_team-thumb">
-                        <img src={process.env.PUBLIC_URL + "/" + item.image} alt={item.name} />
-                        <div className="sigma_team-controls">
-                            <Link to="#" className={this.state.favorite === item ? 'active' : ''} onClick={(e) => this.favoriteTrigger(item)}>
-                                <i className="fal fa-heart" />
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="sigma_team-body">
-                        <h5>
-                            <Link to={"/doctor-details/" + item.id}>{item.name}</Link>
-                        </h5>
-                        <div className="sigma_rating">
-                            {Rating(item.rating)}
-                            <span className="ml-3">({item.reviews.length})</span>
-                        </div>
-                        <div className="sigma_team-categories">
-                            <Link to={"/doctor-details/" + item.id} className="sigma_team-category">{item.specialist}</Link>
-                        </div>
-                        <div className="sigma_team-info">
-                            <span>
-                                <i className="fal fa-map-marker-alt" />
-                                {item.location}
-                            </span>
-                        </div>
-                        <Link to={"/doctor-details/" + item.id} className="sigma_btn btn-block btn-sm">View
-                            More</Link>
-                    </div>
-                </div>
+function CategoryPage({ catId }) {
+  const [doctorsList, setDoctors] = useState([]);
+  const [activePage, setActivePage] = useState(1);
+  const itemPerPage = 4;
+  const categoryId = catId;
+
+  const getDoctorData = () => {
+    axios
+      .get(`https://651be95a194f77f2a5af127c.mockapi.io/Docfind/${categoryId}`)
+      .then((response) => {
+        const doctorData = response.data.doctors;
+        setDoctors(doctorData);
+      })
+      .catch((error) => {
+        console.error("Error fetching doctors:", error);
+      });
+  };
+
+  useEffect(() => {
+    getDoctorData();
+  }, [categoryId]);
+
+  const handlePageChange = (pageNumber) => {
+    setActivePage(pageNumber);
+  };
+
+  const paginationData = doctorsList
+    .slice((activePage - 1) * itemPerPage, activePage * itemPerPage)
+    .map((doctor) => (
+      <div className="col-lg-6 col-md-6" key={doctor.id}>
+        <div className="sigma_team style-16">
+          <div className="sigma_team-thumb">
+            <img
+              src={process.env.PUBLIC_URL + "/assets/img/" + doctor.image}
+              alt={doctor.name}
+            />
+            <div className="sigma_team-controls">
+              <Link to="#">
+                <i className="fal fa-heart" />
+              </Link>
             </div>
-        });
-        return (
-            <div className="sidebar-style-9">
-                <div className="section section-padding">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-lg-4">
-                                <Sidebar />
-                            </div>
-                            <div className="col-lg-8">
-                                <div className="row">
-                                    {/* Data */}
-                                    {paginationData}
-                                    {/* Data */}
-                                </div>
-                                {/* Pagination */}
-                                <Pagination
-                                    activePage={this.state.activePage}
-                                    itemsCountPerPage={this.state.itemPerpage}
-                                    totalItemsCount={this.state.data.length}
-                                    pageRangeDisplayed={this.state.data.length}
-                                    onChange={this.handlePageChange.bind(this)}
-                                    innerClass="pagination"
-                                    activeClass="active"
-                                    itemClass="page-item"
-                                    linkClass="page-link"
-                                />
-                                {/* Pagination */}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div className="sigma_team-body">
+            <h5>
+              <Link to={"/doctor-details/" + doctor.id}>{doctor.name}</Link>
+            </h5>
+            <div className="sigma_team-categories">
+              <Link
+                to={"/doctor-details/" + doctor.id}
+                className="sigma_team-category"
+              >
+                {doctor.qualification}
+              </Link>
             </div>
-        );
-    }
+            <div className="sigma_team-info">
+              <span>
+                <i className="fal fa-map-marker-alt" />
+                {doctor.location}
+              </span>
+            </div>
+            <Link
+              to={"/doctor-details/" + doctor.id}
+              className="sigma_btn btn-block btn-sm"
+            >
+              View More
+            </Link>
+          </div>
+        </div>
+      </div>
+    ));
+
+  return (
+    <div className="sidebar-style-9">
+      <div className="section section-padding">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-4">
+              <Sidebar />
+            </div>
+            <div className="col-lg-8">
+              <div className="row">
+                {/* Data */}
+                {paginationData}
+                {/* Data */}
+              </div>
+              {/* Pagination */}
+              <Pagination
+                activePage={activePage}
+                itemsCountPerPage={itemPerPage}
+                totalItemsCount={doctorsList.length}
+                pageRangeDisplayed={doctorsList.length}
+                onChange={handlePageChange}
+                innerClass="pagination"
+                activeClass="active"
+                itemClass="page-item"
+                linkClass="page-link"
+              />
+              {/* Pagination */}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Content;
+export default CategoryPage;
