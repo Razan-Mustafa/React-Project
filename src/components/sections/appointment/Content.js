@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
-// import { useNavigate } from "react-router-dom";
-// import { createPortal } from "react-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useHistory } from 'react-router-dom';
 
-export default function Content() {
+export default function Content({ catId, detailId }) {
     const history = useHistory();
     const [apiData, setApiData] = useState([]);
     const [userData, setUserData] = useState([]);
@@ -56,21 +54,21 @@ export default function Content() {
     };
     // console.log(userData);
 
-    //Get the doctor_id from the session
-    const categoryId = 1;
-    sessionStorage.setItem('category_id', categoryId.toString());
-    const category_id = sessionStorage.getItem('category_id');
+    //Get the detailId from the session
+    // const categoryId = 1;
+    // sessionStorage.setItem('catId', categoryId.toString());
+    // const catId = sessionStorage.getItem('catId');
 
-    //Get the doctor_id from the session
-    const doctorId = 1;
-    sessionStorage.setItem('doctor_id', doctorId.toString());
-    const doctor_id = sessionStorage.getItem('doctor_id');
+    // //Get the detailId from the session
+    // const doctorId = 1;
+    // sessionStorage.setItem('detailId', doctorId.toString());
+    // const detailId = sessionStorage.getItem('detailId');
 
 
     /*----------------------------------------------Doctors API----------------------------------------------*/
     const getDoctorData = () => {
         axios
-            .get(`https://651be95a194f77f2a5af127c.mockapi.io/Docfind/${category_id}`)
+            .get(`https://651be95a194f77f2a5af127c.mockapi.io/Docfind/${catId}`)
             .then((response) => {
                 const doctorData = response.data;
                 setDoctorData(doctorData);
@@ -78,7 +76,7 @@ export default function Content() {
 
                 // Check if doctorData is defined before accessing its properties
                 if (doctorData) {
-                    const doctor = doctorData.doctors.find((doctor) => doctor.id === doctor_id);
+                    const doctor = doctorData.doctors.find((doctor) => doctor.id === detailId);
                     if (doctor) {
                         const doctorAvailableDays = doctor.availableDays;
                         setDoctorAvailableDays(doctorAvailableDays);
@@ -128,7 +126,7 @@ export default function Content() {
 
         // Fetch doctor data
         axios
-            .get(`https://651be95a194f77f2a5af127c.mockapi.io/Docfind/${category_id}`)
+            .get(`https://651be95a194f77f2a5af127c.mockapi.io/Docfind/${catId}`)
             .then((response) => {
                 setDoctorData(response.data);
             });
@@ -200,7 +198,7 @@ export default function Content() {
         const updatedDoctor = {
             ...doctorData,
             doctors: doctorData.doctors.map((doc) => {
-                if (doc.id === doctor_id) {
+                if (doc.id === detailId) {
                     return {
                         ...doc,
                         availableDays: doc.availableDays.map((day) => {
@@ -225,7 +223,7 @@ export default function Content() {
 
         const sendIsBooked = () => {
             axios
-                .put(`https://651be95a194f77f2a5af127c.mockapi.io/Docfind/${category_id}`, updatedDoctor)
+                .put(`https://651be95a194f77f2a5af127c.mockapi.io/Docfind/${catId}`, updatedDoctor)
         };
 
         sendIsBooked();

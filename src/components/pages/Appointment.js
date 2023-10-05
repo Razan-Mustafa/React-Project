@@ -20,7 +20,10 @@ class Appointment extends Component {
                 </MetaTags>
                 <Header />
                 <Breadcrumbs breadcrumb={{ pagename: pagelocation }} />
-                <Content />
+                <Content
+                    catId={this.props.match.params.idcat}
+                    detailId={this.props.match.params.id}
+                />
                 <Footer />
             </Fragment>
         );

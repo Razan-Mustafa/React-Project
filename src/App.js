@@ -74,7 +74,7 @@ function App() {
             <Route exact path="/faqs" component={Faqs} />
 
             {/* Appointment */}
-            <Route exact path="/appointment" component={Appointment} />
+            <Route exact path="/appointment/:idcat/:id" component={Appointment} />
 
             {/* Clinics */}
             <Route exact path="/clinic/cat/:catId" component={Clinicgrid} />
@@ -85,7 +85,7 @@ function App() {
             {/* Doctors */}
             {/* <Route path="/doctor-grid" component={Doctorgrid} /> */}
             {/* <Route exact path="/all-doctors/:id" component={Doctorgrid} /> */}
-            <Route exact path="/doctor-details/:id" component={Doctordetails} />
+            <Route exact path="/doctor-details/:idcat/:id" component={Doctordetails} />
 
             {/* Contact */}
             <Route exact path="/contact" component={Contact} />

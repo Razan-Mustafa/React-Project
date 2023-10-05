@@ -65,7 +65,7 @@ function CategoryPage({ catId }) {
               </span>
             </div>
             <Link
-              to={"/doctor-details/" + doctor.id}
+              to={"/doctor-details/" + catId + "/" + doctor.id}
               className="sigma_btn btn-block btn-sm"
             >
               View More
