@@ -1,130 +1,3 @@
-// import React, { useRef, useState, useEffect } from "react";
-// import axios from "axios"; // Import Axios
-
-// const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-// const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
-// const REGISTER_URL = "https://651be95a194f77f2a5af127c.mockapi.io/users"; // Updated API URL
-
-// const SignUpForm = ({ setIsLoggedIn }) => {
-//   const nameRef = useRef();
-//   const emailRef = useRef();
-//   const passwordRef = useRef();
-
-//   const [name, setName] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   // const [errMsg, setErrMsg] = useState("");
-//   const [success, setSuccess] = useState(false);
-
-//   useEffect(() => {
-//     nameRef.current.focus();
-//   }, []);
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     if (!EMAIL_REGEX.test(email) || !PASSWORD_REGEX.test(password)) {
-//       alert("Invalid Entry");
-//       return;
-//     }
-
-//     try {
-//       const response = await axios.post(
-//         REGISTER_URL,
-//         { name, email, password }, // Send name, email, and password
-//         {
-//           headers: { "Content-Type": "application/json" },
-//         }
-//       );
-//       console.log(response?.data);
-
-//       setSuccess(true);
-//      setIsLoggedIn(true);
-
-//       // Clear form inputs
-//       setName("");
-//       setEmail("");
-//       setPassword("");
-//     } catch (err) {
-//       if (!err?.response) {
-//         alert("No Server Response");
-//       } else if (err.response?.status === 409) {
-//         alert("Username Taken");
-//       } else {
-//         alert("Registration Failed");
-//       }
-//     }
-//   };
-
-//   return (
-//     <>
-//       {success ? (
-//         <section>
-//           <h1>Success!</h1>
-//           <p>
-//             <a href="#">Sign In</a>
-//           </p>
-//         </section>
-//       ) : (
-//         <section>
-//           <h1>Register</h1>
-//           <form onSubmit={handleSubmit}>
-//             <label htmlFor="name">Name:</label>
-//             <input
-//               type="text"
-//               id="name"
-//               ref={nameRef}
-//               autoComplete="off"
-//               onChange={(e) => setName(e.target.value)}
-//               value={name}
-//               required
-//             />
-
-//             <label htmlFor="email">Email:</label>
-//             <input
-//               type="email"
-//               id="email"
-//               ref={emailRef}
-//               autoComplete="off"
-//               onChange={(e) => setEmail(e.target.value)}
-//               value={email}
-//               required
-//             />
-
-//             <label htmlFor="password">Password:</label>
-//             <input
-//               type="password"
-//               id="password"
-//               ref={passwordRef}
-//               onChange={(e) => setPassword(e.target.value)}
-//               value={password}
-//               required
-//             />
-
-//             <button
-//               disabled={
-//                 !EMAIL_REGEX.test(email) || !PASSWORD_REGEX.test(password)
-//               }
-//             >
-//               Sign Up
-//             </button>
-//           </form>
-//           <p>
-//             Already registered?
-//             <br />
-//             <span className="line">
-//               <a href="#">Sign In</a>
-//             </span>
-//           </p>
-//         </section>
-//       )}
-//     </>
-//   );
-// };
-
-// export default SignUpForm;
-
 import React from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -139,7 +12,7 @@ function SignUpForm({ setIsLoggedIn }) {
     password: "",
   });
 
-    const [errors, setErrors] = React.useState({});
+  const [errors, setErrors] = React.useState({});
 
 
   const handleChange = (evt) => {
@@ -160,12 +33,12 @@ function SignUpForm({ setIsLoggedIn }) {
     //   setErrors(validation());
     // }
 
-       const validationErrors = validation(state); // Validate the form fields
-       if (Object.keys(validationErrors).length > 0) {
-         // If there are validation errors, set them in the state
-         setErrors(validationErrors);
-         return;
-       } 
+    const validationErrors = validation(state); // Validate the form fields
+    if (Object.keys(validationErrors).length > 0) {
+      // If there are validation errors, set them in the state
+      setErrors(validationErrors);
+      return;
+    }
 
     const response = await axios.post(
       "https://651be95a194f77f2a5af127c.mockapi.io/users",
@@ -181,7 +54,7 @@ function SignUpForm({ setIsLoggedIn }) {
       email: "",
       password: "",
     });
-    history.push("/");
+    history.goBack();
   };
 
   return (

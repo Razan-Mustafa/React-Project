@@ -87,13 +87,8 @@ export default function Content({ catId, detailId }) {
 
     const saturdaysInMonth = getCurrentMonthSaturdays();
 
-
-
-
     //Get the user_id from the session
-    const userId = 2;
-    sessionStorage.setItem('user_id', userId.toString());
-    const user_id = sessionStorage.getItem('user_id');
+    const user_id = sessionStorage.getItem('userId');
     // console.log(user_id);
 
     /*----------------------------------------------Users API----------------------------------------------*/
