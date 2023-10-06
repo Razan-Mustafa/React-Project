@@ -17099,3 +17099,39 @@ td.remove button span {
   background-color: #00acb1 !important;
   color: white !important;
 }
+
+/* <<<<<<<<<<<<<<<<       profile        >>>>>>>>>>>>>>> */
+#section-settings {
+  padding: 100px 0;
+}
+
+@media (max-width: 450px) {
+  #section-settings {
+    padding: 10px 0 20px 0;
+  }
+}
+
+.handle {
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  position: relative;
+  background-color: var(--thm-base);
+  border: 0;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 15px;
+  transition: 0.3s;
+  text-transform: uppercase;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 3px 24px rgba(0, 0, 0, 0.1);
+}
+
+.handle:hover {
+  color: #fff;
+}

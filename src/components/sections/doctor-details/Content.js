@@ -16,9 +16,11 @@ import axios from 'axios';
 const userId = localStorage.getItem('userId');
 const userName = localStorage.getItem('userName');
 
+
 // localStorage.removeItem('sessionVariable');
 
 function Content({ catId, detailId }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('IsLoggedIn') === 'true');
   const [showAllComments, setShowAllComments] = useState(false);
   const [Doctors, setDoctors] = useState([]);
 
@@ -34,33 +36,33 @@ function Content({ catId, detailId }) {
     }
   );
   const [rating, setRating] = useState(5);
-  
-  function handle(e){
-    const newReview ={...reviewText}
+
+  function handle(e) {
+    const newReview = { ...reviewText }
     newReview[e.target.id] = e.target.value
     setReviewText(newReview)
     console.log(newReview)
-    }
-    // // review object
-    // const newReview = {
-    //   user: {
-    //     name: userName,
-    //     id: userId,
-    //   },
-    //   rating: rating,
-    //   comment: reviewText,
-    //   commentdate: new Date().toLocaleDateString(),
-    // };
+  }
+  // // review object
+  // const newReview = {
+  //   user: {
+  //     name: userName,
+  //     id: userId,
+  //   },
+  //   rating: rating,
+  //   comment: reviewText,
+  //   commentdate: new Date().toLocaleDateString(),
+  // };
 
   useEffect(() => {
     axios
-      .get('https://651a613f340309952f0d2f42.mockapi.io/REACT')
+      .get('https://651be95a194f77f2a5af127c.mockapi.io/Docfind')
       .then((response) => setDoctors(response.data))
       .catch((error) => console.error(error));
   }, []);
 
 
-  
+
 
   // const handleReviewTextChange = (e) => {
   //   setReviewText(e.target.value);
@@ -102,6 +104,7 @@ function Content({ catId, detailId }) {
 
 
   const filteredItem = Doctors.find((item) => item.id === detailId);
+  console.log(filteredItem);
 
   return (filteredItem ? (
 
@@ -144,7 +147,7 @@ function Content({ catId, detailId }) {
                               <i className="fal fa-building" />
                               {Doc.location}
                             </span>
-                            <span>
+                            {/* <span>
                               <i className="fal fa-clock" />
                               {Doc.availableDays.map((day, index) => (
                                 <React.Fragment key={index}>
@@ -161,7 +164,7 @@ function Content({ catId, detailId }) {
                                   {index !== Doc.availableTime.length - 1 && <br />}
                                 </React.Fragment>
                               ))}
-                            </span>
+                            </span> */}
                           </div>
                         </div>
                       </div>
@@ -254,7 +257,7 @@ function Content({ catId, detailId }) {
                     <form>
                       <div className="form-group">
                         <label>Rating:</label>
-                        <select value={rating} onChange={(e)=>handle(e)}>
+                        <select value={rating} onChange={(e) => handle(e)}>
                           <option value={1}>1</option>
                           <option value={2}>2</option>
                           <option value={3}>3</option>
@@ -267,7 +270,7 @@ function Content({ catId, detailId }) {
                         <textarea
                           rows="4"
                           value={reviewText}
-                          onChange={(e)=>handle(e)}
+                          onChange={(e) => handle(e)}
                           required
                         ></textarea>
                       </div>
@@ -330,7 +333,7 @@ function Content({ catId, detailId }) {
                         </ul>
                       </div>
 
-                      <Link to={"/appointment/" + catId + "/" + detailId} className="sigma_btn btn-block btn-sm">
+                      <Link to={isLoggedIn ? `/appointment/${catId}/${detailId}` : '/authUser'} className="sigma_btn btn-block btn-sm">
                         Book Appointment
                         <i className="fal fa-arrow-right ml-3" />
                       </Link>

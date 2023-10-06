@@ -2,8 +2,13 @@ import React, { Fragment, useState } from "react";
 import Mobilemenu from "./Mobilemenu";
 import { Link } from "react-router-dom";
 import navigation from "../../data/navigation.json";
+import { useHistory } from 'react-router-dom';
 
 function Headertwo() {
+
+  const history = useHistory();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('IsLoggedIn') === 'true');
   // Define state and toggle function using useState hook
   const [navMethod, setNavMethod] = useState(false);
 
@@ -11,6 +16,16 @@ function Headertwo() {
   const toggleNav = () => {
     setNavMethod(!navMethod);
   };
+
+  const IsLoggedIn = sessionStorage.getItem('IsLoggedIn');
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('IsLoggedIn');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('userName');
+    setIsLoggedIn(false);
+    history.goBack();
+  }
 
   return (
     <Fragment>
@@ -103,12 +118,29 @@ function Headertwo() {
                 </ul>
                 <div className="sigma_header-controls style-2">
                   <ul className="sigma_header-controls-inner">
-                    <li className="d-none d-sm-block ml-5">
-                      <Link to="/doctor-grid" className="sigma_btn btn-sm">
-                        Find A Doctor
-                        <i className="fal fa-plus ml-3" />
-                      </Link>
-                    </li>
+                    {IsLoggedIn &&
+                      <li className="d-none d-sm-block" style={{ marginLeft: '20px' }}>
+                        <Link to="/profile" className="sigma_btn btn-sm">
+                          My Profile
+                        </Link>
+                      </li>
+                    }
+                    {!IsLoggedIn &&
+                      <li className="d-none d-sm-block" style={{ marginLeft: '20px' }}>
+                        <Link to="/authUser" className="sigma_btn btn-sm">
+                          Login
+                        </Link>
+                      </li>
+                    }
+
+                    {IsLoggedIn &&
+                      <li className="d-none d-sm-block">
+                        <button onClick={handleLogout} className="sigma_btn btn-sm">
+                          Log out
+                          <i className="fal fa-arrow-right" />
+                        </button>
+                      </li>
+                    }
                     <li
                       className="aside-toggle aside-trigger"
                       onClick={toggleNav}
@@ -125,7 +157,7 @@ function Headertwo() {
         </div>
       </header>
       {/* Header */}
-    </Fragment>
+    </Fragment >
   );
 }
 

@@ -3,8 +3,13 @@ import Navhelper from "../../helper/NavHelper";
 import Mobilemenu from "./Mobilemenu";
 import { Link } from "react-router-dom";
 import navigation from "../../data/navigation.json";
+import { useHistory } from 'react-router-dom';
 
 function Header() {
+  const history = useHistory();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('IsLoggedIn') === 'true');
+
   const [navMethod, setNavMethod] = useState(false);
   const [searchMethod, setSearchMethod] = useState(false);
 
@@ -15,6 +20,16 @@ function Header() {
   const toggleSearch = () => {
     setSearchMethod(!searchMethod);
   };
+
+  const IsLoggedIn = sessionStorage.getItem('IsLoggedIn');
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('IsLoggedIn');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('userName');
+    setIsLoggedIn(false);
+    history.goBack();
+  }
 
   return (
     <>
@@ -106,13 +121,40 @@ function Header() {
               </ul>
               <div className="sigma_header-controls style-2">
                 <ul className="sigma_header-controls-inner">
-                 
-                  <li className="d-none d-sm-block">
-                    <Link to="/contact" className="sigma_btn btn-sm">
-                      Get a Quote
-                      <i className="fal fa-arrow-right" />
+                  <li className="search-trigger header-controls-item d-none d-sm-block">
+                    <Link
+                      to="#"
+                      className="sigma_header-control-search bg-transparent border-0"
+                      title="Search"
+                      onClick={toggleSearch}
+                    >
+                      <i className="far fa-search" />
                     </Link>
                   </li>
+                  {IsLoggedIn &&
+                    <li className="d-none d-sm-block">
+                      <Link to="/profile" className="sigma_btn btn-sm">
+                        My Profile
+                      </Link>
+                    </li>
+                  }
+                  {!IsLoggedIn &&
+                    <li className="d-none d-sm-block" style={{ marginLeft: '20px' }}>
+                      <Link to="/authUser" className="sigma_btn btn-sm">
+                        Login
+                      </Link>
+                    </li>
+                  }
+
+                  {IsLoggedIn &&
+                    <li className="d-none d-sm-block">
+                      <button onClick={handleLogout} className="sigma_btn btn-sm">
+                        Log out
+                        <i className="fal fa-arrow-right" />
+                      </button>
+                    </li>
+                  }
+
                   <li
                     className="aside-toggle aside-trigger"
                     onClick={toggleNav}

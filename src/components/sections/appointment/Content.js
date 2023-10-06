@@ -16,6 +16,17 @@ export default function Content({ catId, detailId }) {
     const [doctorPrice, setDoctorPrice] = useState("");
     // const [isOpen, setIsOpen] = useState(false)
 
+
+    // Function to calculate the next Saturday date
+    // const getNextSaturday = () => {
+    //     const currentDate = new Date();
+    //     const daysUntilSaturday = 4 - currentDate.getDay(); // Calculate days until Saturday
+    //     const nextSaturdayDate = new Date(currentDate);
+    //     nextSaturdayDate.setDate(currentDate.getDate() + daysUntilSaturday);
+    //     return nextSaturdayDate;
+    // };
+
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -35,11 +46,49 @@ export default function Content({ catId, detailId }) {
     const [bookingTime, setBookingTime] = useState(formData.bookingTime);
     const [date, setDate] = useState(formData.date);
     const [notes, setNotes] = useState(formData.notes);
+    // const nextSaturday = getNextSaturday();
+    // const nextSaturdayFormatted = nextSaturday.toISOString().split('T')[0];
+
+    const [checkIn, setCheckIn] = useState('');
+
+    const getCurrentMonthSaturdays = () => {
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+        const currentDay = currentDate.getDay();
+        const saturdays = [];
+        let startDay = null;
+        switch (bookingDay) {
+            case 'Sunday':
+                startDay = 1
+                break;
+            case 'Monday':
+                startDay = 2
+                break;
+            case 'Wednesday':
+                startDay = 4
+                break;
+            case 'Friday':
+                startDay = 6
+                break
+
+            default:
+                break;
+        }
+        for (let day = currentDay; day <= 31; day++) {
+            const date = new Date(currentYear, currentMonth, day);
+            if (date.getDay() === startDay && date.getMonth() === currentMonth) {
+                saturdays.push(date.toISOString().split('T')[0]);
+            }
+        }
+
+        return saturdays;
+    };
+
+    const saturdaysInMonth = getCurrentMonthSaturdays();
 
     //Get the user_id from the session
-    const userId = 2;
-    sessionStorage.setItem('user_id', userId.toString());
-    const user_id = sessionStorage.getItem('user_id');
+    const user_id = sessionStorage.getItem('userId');
     // console.log(user_id);
 
     /*----------------------------------------------Users API----------------------------------------------*/
@@ -350,7 +399,19 @@ export default function Content({ catId, detailId }) {
                                             </div>
                                             <div className="col-12">
                                                 <div className="form-group">
-                                                    <input type="date" name="date" value={date} onChange={handleChange} data-provide="datepicker" placeholder="Select Date" required />
+                                                    <select
+                                                        className="date-input"
+                                                        id="date-in"
+                                                        onChange={(e) => {
+                                                            setCheckIn(e.target.value);
+                                                        }}
+                                                        value={checkIn}
+                                                    >
+                                                        <option value="" disabled>Select Date</option>
+                                                        {saturdaysInMonth.map((saturday, index) => (
+                                                            <option key={index} value={saturday}>{saturday}</option>
+                                                        ))}
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div className="col-12">

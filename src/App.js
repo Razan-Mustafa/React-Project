@@ -26,7 +26,7 @@ import Doctordetails from "./components/pages/Doctordetails";
 import Contact from "./components/pages/Contact";
 import AuthUser from "./components/pages/AuthUser";
 import Errorpage from "./components/pages/Errorpage";
-
+import Profile from './components/pages/Profile';
 // Scroll to Top
 const ScrollToTop = withRouter(({ children, location: { pathname } }) => {
   useLayoutEffect(() => {
@@ -42,6 +42,8 @@ function App() {
       <Suspense fallback={<div></div>}>
         <ScrollToTop>
           <Switch>
+            {/*  Profile  */}
+            <Route exact path="/profile" component={Profile} />
             {/* Home */}
             <Route exact path="/" component={Home} />
 

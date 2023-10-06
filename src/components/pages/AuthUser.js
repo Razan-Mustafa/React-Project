@@ -16,7 +16,6 @@ export default function AuthUser() {
   return (
     <div className="badys">
       <div className="Apps">
-        <h2 className="h2">Sign in/up Form</h2>
         <div className={containerClass} id="containers">
           <SignUpForm />
           <SignInForm />
