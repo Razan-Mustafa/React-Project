@@ -106,16 +106,7 @@ function Header() {
               </ul>
               <div className="sigma_header-controls style-2">
                 <ul className="sigma_header-controls-inner">
-                  <li className="search-trigger header-controls-item d-none d-sm-block">
-                    <Link
-                      to="#"
-                      className="sigma_header-control-search bg-transparent border-0"
-                      title="Search"
-                      onClick={toggleSearch}
-                    >
-                      <i className="far fa-search" />
-                    </Link>
-                  </li>
+                 
                   <li className="d-none d-sm-block">
                     <Link to="/contact" className="sigma_btn btn-sm">
                       Get a Quote

@@ -20,6 +20,7 @@ import Faqs from "./components/pages/Faqs";
 import Appointment from "./components/pages/Appointment";
 
 
+import category from "./components/pages/category";
 import Doctorgrid from "./components/pages/Doctorgrid";
 import Doctordetails from "./components/pages/Doctordetails";
 import Contact from "./components/pages/Contact";
@@ -45,6 +46,7 @@ function App() {
             <Route exact path="/" component={Home} />
 
             {/* Category */}
+            <Route exact path="/all-category" component={category} />
             <Route exact path="/category/:id" component={Doctorgrid} />
 
             {/* Blog */}
@@ -78,7 +80,6 @@ function App() {
               component={Appointment}
             />
 
-           
             {/* Doctors */}
             {/* <Route path="/doctor-grid" component={Doctorgrid} /> */}
             {/* <Route exact path="/all-doctors/:id" component={Doctorgrid} /> */}
@@ -87,7 +88,11 @@ function App() {
               path="/doctor-details/:idcat/:id"
               component={Doctordetails}
             />
-            <Route exact path="/doctor-details/:idcat/:id" component={Doctordetails} />
+            <Route
+              exact
+              path="/doctor-details/:idcat/:id"
+              component={Doctordetails}
+            />
 
             {/* Contact */}
             <Route exact path="/contact" component={Contact} />
