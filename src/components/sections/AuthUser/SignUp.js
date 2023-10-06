@@ -48,14 +48,21 @@ function SignUpForm({ setIsLoggedIn }) {
     );
  
     // alert(`User registered successfully  ${response.data.name}`);
-
-
-     Swal.fire({
-       title: `Your registered successfully  ${response.data.name}`,
-       customClass: {
-         confirmButton: "custom-confirm-button-class",
+ 
+Swal.fire({
+  title: `Your registered successfully ${response.data.name}`,
+    customClass: {confirmButton: "custom-confirm-button-class",
        },
-     });
+  icon: "success",
+});
+
+
+    //  Swal.fire({
+    //    title: `Your registered successfully  ${response.data.name}`,
+    //    customClass: {
+    //      confirmButton: "custom-confirm-button-class",
+    //    },
+    //  });
 
     setIsLoggedIn = true;
 
