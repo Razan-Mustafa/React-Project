@@ -30,8 +30,8 @@ function Categories() {
                 src={
                   process.env.PUBLIC_URL +
                   "/assets/img/" +
-                  category.image +
-                  ".jpg"
+                  category.image 
+                  
                 }
                 alt={category.image}
               />
@@ -45,7 +45,7 @@ function Categories() {
                 to={"/category/" + category.id}
                 className="btn-link primary-color"
               >
-                Read More
+                See All
                 <i className="fal fa-arrow-right" />
               </Link>
             </div>

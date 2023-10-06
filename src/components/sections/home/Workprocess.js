@@ -15,8 +15,7 @@ class Workprocess extends Component {
                             </div>
                         </div>
                         <div className="col-lg-4">
-                            <p className="mb-0">Donec rutrum congue leo eget malesuada. Nulla porttitor accumsan tincidunt. Vestibulum
-                                ante ipsum primis.</p>
+                            <p className="mb-0"></p>
                         </div>
                         <div className="col-lg-3 text-lg-right">
                             <Link to="/appointment" className="sigma_btn mt-4 mt-lg-0">Make Appointment</Link>

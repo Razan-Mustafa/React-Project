@@ -4,14 +4,17 @@ import { getDoctor } from '../../../helper/doctorHelper';
 import { getAuthor, Rating } from '../../../helper/helper';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import Swal from "sweetalert2";
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 
 // Set a value in local storage
 // localStorage.setItem('detailId', '1');
 
-// // Retrieve the value from local storage
-// const detailId = localStorage.getItem('detailId');
+// Retrieve the value from local storage
+const userId = localStorage.getItem('userId');
+const userName = localStorage.getItem('userName');
 
 // localStorage.removeItem('sessionVariable');
 
@@ -19,8 +22,35 @@ function Content({ catId, detailId }) {
   const [showAllComments, setShowAllComments] = useState(false);
   const [Doctors, setDoctors] = useState([]);
 
-  const [reviewText, setReviewText] = useState('');
+  const [reviewText, setReviewText] = useState(
+    {
+      user: {
+        name: userName,
+        id: userId,
+      },
+      rating: " ",
+      comment: " ",
+      commentdate: new Date().toLocaleDateString(),
+    }
+  );
   const [rating, setRating] = useState(5);
+  
+  function handle(e){
+    const newReview ={...reviewText}
+    newReview[e.target.id] = e.target.value
+    setReviewText(newReview)
+    console.log(newReview)
+    }
+    // // review object
+    // const newReview = {
+    //   user: {
+    //     name: userName,
+    //     id: userId,
+    //   },
+    //   rating: rating,
+    //   comment: reviewText,
+    //   commentdate: new Date().toLocaleDateString(),
+    // };
 
   useEffect(() => {
     axios
@@ -30,53 +60,43 @@ function Content({ catId, detailId }) {
   }, []);
 
 
-  const handleReviewTextChange = (e) => {
-    setReviewText(e.target.value);
-  };
+  
 
-  const handleRatingChange = (e) => {
-    setRating(parseInt(e.target.value, 10));
-  };
+  // const handleReviewTextChange = (e) => {
+  //   setReviewText(e.target.value);
+  // };
 
-  const handleReviewSubmit = (e) => {
-    e.preventDefault();
+  // const handleRatingChange = (e) => {
+  //   setRating(parseInt(e.target.value, 10));
+  // };
 
-    // review object
-    const newReview = {
-      user: {
-        name: 'User Name',
-        id: 123,
-      },
-      rating: rating,
-      comment: reviewText,
-      commentdate: new Date().toLocaleDateString(),
-    };
+  // const handleReviewSubmit = (e) => {
+  //   e.preventDefault();
 
-    // Add the new review to the doctor's reviews array
-    filteredItem.doctors[0].reviews.push(newReview);
-    // const filteredItem = Doctors.find((item) => item.id === detailId );
+  // const handleReviewSubmit = (e) => {
+  //   e.preventDefault();
 
-    // Clear the form inputs
-    setReviewText('');
-    setRating(5); // Reset rating to 5 or your default rating
+  //   // review object
+  //   const newReview = {
+  //     user: {
+  //       name: 'User Name',
+  //       id: 123,
+  //     },
+  //     rating: rating,
+  //     comment: reviewText,
+  //     commentdate: new Date().toLocaleDateString(),
+  //   };
 
-    // You can also send the new review data to your server/API here if needed
-  };
+  //   // Add the new review to the doctor's reviews array
+  //   filteredItem.doctors[0].reviews.push(newReview);
+  //   // const filteredItem = Doctors.find((item) => item.id === detailId );
 
+  //   // Clear the form inputs
+  //   setReviewText('');
+  //   setRating(5); // Reset rating to 5 or your default rating
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  //   // You can also send the new review data to your server/API here if needed
+  // // };
 
 
 
@@ -232,10 +252,10 @@ function Content({ catId, detailId }) {
                   <div className="container">
                     <br />
                     <h4>Add a Review</h4>
-                    <form onSubmit={handleReviewSubmit}>
+                    <form>
                       <div className="form-group">
                         <label>Rating:</label>
-                        <select value={rating} onChange={handleRatingChange}>
+                        <select value={rating} onChange={(e)=>handle(e)}>
                           <option value={1}>1</option>
                           <option value={2}>2</option>
                           <option value={3}>3</option>
@@ -248,7 +268,7 @@ function Content({ catId, detailId }) {
                         <textarea
                           rows="4"
                           value={reviewText}
-                          onChange={handleReviewTextChange}
+                          onChange={(e)=>handle(e)}
                           required
                         ></textarea>
                       </div>
