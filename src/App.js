@@ -18,12 +18,9 @@ import Services from "./components/pages/Services";
 import Servicedetails from "./components/pages/Servicedetails";
 import Faqs from "./components/pages/Faqs";
 import Appointment from "./components/pages/Appointment";
-import Clinicgrid from "./components/pages/Clinicgrid";
-import Cliniclist from "./components/pages/Cliniclist";
-import Clinicdetails from "./components/pages/Clinicdetails";
+
 
 import Doctorgrid from "./components/pages/Doctorgrid";
-// import Doctorlist from "./components/pages/Doctorlist";
 import Doctordetails from "./components/pages/Doctordetails";
 import Contact from "./components/pages/Contact";
 import AuthUser from "./components/pages/AuthUser";
@@ -81,12 +78,7 @@ function App() {
               component={Appointment}
             />
 
-            {/* Clinics */}
-            <Route exact path="/clinic/cat/:catId" component={Clinicgrid} />
-            <Route exact path="/clinic-grid" component={Clinicgrid} />
-            <Route exact path="/clinic-list" component={Cliniclist} />
-            <Route exact path="/clinic-details/:id" component={Clinicdetails} />
-
+           
             {/* Doctors */}
             {/* <Route path="/doctor-grid" component={Doctorgrid} /> */}
             {/* <Route exact path="/all-doctors/:id" component={Doctorgrid} /> */}
@@ -95,6 +87,7 @@ function App() {
               path="/doctor-details/:idcat/:id"
               component={Doctordetails}
             />
+            <Route exact path="/doctor-details/:idcat/:id" component={Doctordetails} />
 
             {/* Contact */}
             <Route exact path="/contact" component={Contact} />

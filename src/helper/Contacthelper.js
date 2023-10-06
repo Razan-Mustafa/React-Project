@@ -40,26 +40,30 @@ class Contacthelper extends Component {
     }
     handleSubmit(e) {
         e.preventDefault();
-        fetch('https://metropolitanhost.com/scripts/sendmail.php', {
-            method: "POST",
-            body: JSON.stringify(this.state),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        }).then(
-            (response) => (response.json())
-        ).then((response) => {
-            if (response.id !== '') {
-                document.getElementById("server_response_success").classList.add("d-block");
-                this.resetForm();
-                this.setState({
-                    isVerified:true
-                })
-            } else {
-                document.getElementById("server_response_danger").classList.add("d-block");
-            }
+        fetch("https://64db19bd593f57e435b0704a.mockapi.io/messages", {
+          method: "POST",
+          body: JSON.stringify(this.state),
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
         })
+          .then((response) => response.json())
+          .then((response) => {
+            if (response.id !== "") {
+              document
+                .getElementById("server_response_success")
+                .classList.add("d-block");
+              this.resetForm();
+              this.setState({
+                isVerified: true,
+              });
+            } else {
+              document
+                .getElementById("server_response_danger")
+                .classList.add("d-block");
+            }
+          });
     }
     resetForm() {
         this.setState({ name: "", phone: "", email: "", subject: "", message: "", })
