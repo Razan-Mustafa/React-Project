@@ -24,7 +24,7 @@ function Content({ catId, detailId }) {
 
   useEffect(() => {
     axios
-      .get('https://651a613f340309952f0d2f42.mockapi.io/REACT')
+      .get('https://651be95a194f77f2a5af127c.mockapi.io/Docfind')
       .then((response) => setDoctors(response.data))
       .catch((error) => console.error(error));
   }, []);
@@ -82,6 +82,7 @@ function Content({ catId, detailId }) {
 
 
   const filteredItem = Doctors.find((item) => item.id === detailId);
+  console.log(filteredItem);
 
   return (filteredItem ? (
 
@@ -124,7 +125,7 @@ function Content({ catId, detailId }) {
                               <i className="fal fa-building" />
                               {Doc.location}
                             </span>
-                            <span>
+                            {/* <span>
                               <i className="fal fa-clock" />
                               {Doc.availableDays.map((day, index) => (
                                 <React.Fragment key={index}>
@@ -141,7 +142,7 @@ function Content({ catId, detailId }) {
                                   {index !== Doc.availableTime.length - 1 && <br />}
                                 </React.Fragment>
                               ))}
-                            </span>
+                            </span> */}
                           </div>
                         </div>
                       </div>
