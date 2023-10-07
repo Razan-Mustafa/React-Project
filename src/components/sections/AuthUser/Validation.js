@@ -20,8 +20,8 @@ function validation(value) {
   } else if (!passwordPattern.test(value.password)) {
     errors.password =
       "Password must be at least 8 charact, contain one letter & one digit.";
-  }
-
+  } 
+  
   return errors;
 }
 

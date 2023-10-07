@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-// import { getRecentService } from "../../../helper/serviceHelper";
 
 function Categories() {
   const [categories, setCategories] = useState([]);

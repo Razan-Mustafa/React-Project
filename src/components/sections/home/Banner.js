@@ -46,7 +46,7 @@ function Banner() {
                         dangerouslySetInnerHTML={{ __html: item.title }}
                       />
                       <div className="banner-links d-flex align-items-center justify-content-center">
-                        <Link to="/doctor-grid" className="sigma_btn">
+                        <Link to="/all-category" className="sigma_btn">
                           Find A Doctor
                           <i className="fal fa-plus ml-3 d-none d-sm-inline-block" />
                         </Link>

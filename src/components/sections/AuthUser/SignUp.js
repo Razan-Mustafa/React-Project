@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import validation from './Validation'
+import Swal from "sweetalert2";
+import { Link } from "react-scroll";
 
 function SignUpForm({ setIsLoggedIn }) {
   const history = useHistory();
@@ -44,8 +46,16 @@ function SignUpForm({ setIsLoggedIn }) {
       "https://651be95a194f77f2a5af127c.mockapi.io/users",
       state
     );
+ 
+    // alert(`User registered successfully  ${response.data.name}`);
 
-    alert(`User registered successfully  ${response.data.name}`);
+
+     Swal.fire({
+       title: `Your registered successfully  ${response.data.name}`,
+       customClass: {
+         confirmButton: "custom-confirm-button-class",
+       },
+     });
 
     setIsLoggedIn = true;
 
@@ -54,7 +64,7 @@ function SignUpForm({ setIsLoggedIn }) {
       email: "",
       password: "",
     });
-    history.goBack();
+    // history.goBack();
   };
 
   return (
