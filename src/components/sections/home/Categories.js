@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-// import { getRecentService } from "../../../helper/serviceHelper";
 
 function Categories() {
   const [categories, setCategories] = useState([]);
@@ -30,8 +29,8 @@ function Categories() {
                 src={
                   process.env.PUBLIC_URL +
                   "/assets/img/" +
-                  category.image +
-                  ".jpg"
+                  category.image 
+                  
                 }
                 alt={category.image}
               />
@@ -45,7 +44,7 @@ function Categories() {
                 to={"/category/" + category.id}
                 className="btn-link primary-color"
               >
-                Read More
+                See All
                 <i className="fal fa-arrow-right" />
               </Link>
             </div>
