@@ -104,7 +104,10 @@ function CategoryPage({ catId }) {
                             </div>
                             <div className="sigma_team-body">
                               <h5>
-                                <Link to={"/doctor-details/" + doctor.id}>
+                                <Link
+                                  style={{ fontSize: "20px" }}
+                                  to={"/doctor-details/" + doctor.id}
+                                >
                                   {doctor.name}
                                 </Link>
                               </h5>
