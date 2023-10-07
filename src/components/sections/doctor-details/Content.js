@@ -10,11 +10,6 @@ import { useHistory } from 'react-router-dom';
 
 
 
-// Set 
-// localStorage.setItem('userId', '1');
-// localStorage.setItem('userName', 'RazanMustafa');
-// localStorage.setItem('userImg', 'img (1).png');
-
 
 function Content({ catId, detailId }) {
 
@@ -171,7 +166,7 @@ function Content({ catId, detailId }) {
                           </span>
                           <span>
                             <i className="fal fa-money-bill" />
-                            Service Price :{doctorDatafiltered.price}
+                            Service Price :{doctorDatafiltered.price} JOD
                           </span>
 
                         </div>
