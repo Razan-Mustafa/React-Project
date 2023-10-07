@@ -56,7 +56,7 @@ function Contactform() {
         //   });
 
           Swal.fire({
-            position: "top-end",
+            // position: "top-end",
             icon: "success",
             title: "your  message sent successfully",
             showConfirmButton: false,

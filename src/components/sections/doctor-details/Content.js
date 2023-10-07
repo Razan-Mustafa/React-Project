@@ -61,7 +61,9 @@ function Content({ catId, detailId }) {
           const newReview = response.data;
           // Update reviews state with the new review
           setReview([...Review, newReview]);
+          setReviewText({ rating: 5, comment: "" });
           console.log('Review added successfully:', newReview);
+          BtnClick();
         } else {
           console.error('Failed to add review');
         }
@@ -69,18 +71,14 @@ function Content({ catId, detailId }) {
       .catch((error) => {
         console.error('Error adding review:', error);
       });
-
-    // localStorage.removeItem('userId');
-    // localStorage.removeItem('userName');
-    // localStorage.removeItem('userImg');
   };
 
   const BtnClick = () => {
     Swal.fire({
-      title: 'Your Review Submitted Successfully !',
-      customClass: {
-        confirmButton: 'custom-confirm-button-class'
-      }
+      icon: "success",
+      title: "Your Review Submitted Successfully !",
+      showConfirmButton: false,
+      timer: 2500,
     });
   }
   // end
@@ -286,7 +284,7 @@ function Content({ catId, detailId }) {
                           required
                         ></textarea>
                       </div>
-                      <button type="submit" onClick={BtnClick}>Submit Review</button>
+                      <button type="submit">Submit Review</button>
                     </form>
                   </div>
                 }
