@@ -55,9 +55,6 @@ function SignInForm({ setIsLoggedIn }) {
       alert("Login failed.");
     }
 
-
-
-
     setState({
       email: "",
       password: "",

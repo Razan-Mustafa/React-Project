@@ -24,7 +24,7 @@ function Headertwo() {
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('userName');
     setIsLoggedIn(false);
-    history.goBack();
+    history.push('/');
   }
 
   return (
