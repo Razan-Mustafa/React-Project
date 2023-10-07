@@ -150,6 +150,14 @@ const Profile = () => {
             setProfileData(res.data);
 
             // You can add a success message or perform additional actions here
+        }).catch((err) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Image is too big',
+                showConfirmButton: false,
+                timer: 2500,
+            });
         });
     };
 
@@ -285,8 +293,8 @@ const Profile = () => {
                                     <div className="col-lg-6 mb20 mt-4">
 
                                         <h5>Uplode Your Image</h5>
-                                        <input type="file" name="file" id="file" className="form-control" onChange={handleImage} />
-                                        <buuton className="btn mt-3 handle" onClick={handleApi}  >uplode your image</buuton>
+                                        <input accept="image/*" type="file" name="file" id="file" className="form-control" onChange={handleImage} />
+                                        <button className="btn mt-3 handle" onClick={handleApi}  >uplode your image</button>
                                     </div>
                                 </div>
                             </div>
@@ -294,31 +302,33 @@ const Profile = () => {
                     </div>
                 </div >
 
-                <div className="container pt-5">
-                    <h4 className="mb-4">Booking Information</h4>
-                    <div className="custom-table-container">
-                        <table className="table table-bordered">
-                            <thead className='tablepro'>
-                                <tr>
-                                    <th scope="col">Doctor Name</th>
-                                    <th scope="col">Booking Day</th>
-                                    <th scope="col">Booking Time</th>
-                                    <th scope="col">Booking Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {loopData.map((data, index) => (
-                                    <tr key={index}>
-                                        <td>{data.doctorName}</td>
-                                        <td>{data.bookingDay}</td>
-                                        <td>{data.bookingTime}</td>
-                                        <td>{data.bookingDate}</td>
+                {loopData.length > 0 &&
+                    <div className="container pt-5">
+                        <h4 className="mb-4">Booking Information</h4>
+                        <div className="custom-table-container">
+                            <table className="table table-bordered">
+                                <thead className='tablepro'>
+                                    <tr>
+                                        <th scope="col">Doctor Name</th>
+                                        <th scope="col">Booking Day</th>
+                                        <th scope="col">Booking Time</th>
+                                        <th scope="col">Booking Date</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {loopData.map((data, index) => (
+                                        <tr key={index}>
+                                            <td>{data.doctorName}</td>
+                                            <td>{data.bookingDay}</td>
+                                            <td>{data.bookingTime}</td>
+                                            <td>{data.bookingDate}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                }
 
             </section >
 
