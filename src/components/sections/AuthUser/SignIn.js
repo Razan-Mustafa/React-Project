@@ -57,7 +57,9 @@ function SignInForm({ setIsLoggedIn }) {
       console.log(sessionStorage.getItem("userId"));
     } else {
       Swal.fire({
-        title: "Login failed. Please check your email & password.",
+        icon: "error",
+        title: "Oops...",
+        text: "Login failed. Please check your email & password.",
         customClass: {
           confirmButton: "custom-confirm-button-class",
         },
