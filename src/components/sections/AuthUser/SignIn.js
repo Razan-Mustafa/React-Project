@@ -155,6 +155,7 @@ function SignInForm({ setIsLoggedIn }) {
       sessionStorage.setItem("userName", user.name);
       sessionStorage.setItem("IsLoggedIn", "true"); // Store as string
         Swal.fire({
+          icon: "success",
           title: "Login successful!",
           customClass: {
             confirmButton: "custom-confirm-button-class",
@@ -164,17 +165,24 @@ function SignInForm({ setIsLoggedIn }) {
 
       console.log(sessionStorage.getItem("userId"));
     } else {
-      Swal.fire({
-        title: "Login failed. Please check your email & password.",
-        customClass: {
-          confirmButton: "custom-confirm-button-class",
-        },
-      });
+
+Swal.fire({
+  icon: "error",
+  title: "Oops...",
+  text: "Login failed. Please check your email & password.",
+  customClass: {
+    confirmButton: "custom-confirm-button-class",
+  },
+});
+
+
     }
     } catch (error) {
       // alert("Login failed.");
       Swal.fire({
-        title: "Login failed.",
+        icon: "error",
+        title: "Oops...",
+        text: "Login failed.",
         customClass: {
           confirmButton: "custom-confirm-button-class",
         },
@@ -195,6 +203,7 @@ function SignInForm({ setIsLoggedIn }) {
   return (
     <div className="form-containers sign-in-containers">
       <form className="forms" onSubmit={handleOnSubmit}>
+         
         <h3 className="h3">Sign in</h3>
 
         <span className="span"> use your account</span>
