@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 function SignInForm({ setIsLoggedIn }) {
   const history = useHistory();
@@ -54,17 +55,17 @@ function SignInForm({ setIsLoggedIn }) {
         });
         history.goBack();
 
-      console.log(sessionStorage.getItem("userId"));
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Login failed. Please check your email & password.",
-        customClass: {
-          confirmButton: "custom-confirm-button-class",
-        },
-      });
-    }
+        console.log(sessionStorage.getItem("userId"));
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Login failed. Please check your email & password.",
+          customClass: {
+            confirmButton: "custom-confirm-button-class",
+          },
+        });
+      }
     } catch (error) {
       // alert("Login failed.");
       Swal.fire({
@@ -91,7 +92,7 @@ function SignInForm({ setIsLoggedIn }) {
   return (
     <div className="form-containers sign-in-containers">
       <form className="forms" onSubmit={handleOnSubmit}>
-         
+
         <h3 className="h3">Sign in</h3>
 
         <span className="span"> use your account</span>
@@ -111,7 +112,7 @@ function SignInForm({ setIsLoggedIn }) {
           onChange={handleChange}
           className="inputs"
         />
-        <a>Forgot your password?</a>
+        <Link to="/forgot-password">Forgot your password?</Link>
         <button type="submit" className="buttons">
           Sign In
         </button>

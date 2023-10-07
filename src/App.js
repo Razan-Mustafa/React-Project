@@ -24,7 +24,10 @@ import category from "./components/pages/category";
 import Doctorgrid from "./components/pages/Doctorgrid";
 import Doctordetails from "./components/pages/Doctordetails";
 import Contact from "./components/pages/Contact";
+
 import AuthUser from "./components/pages/AuthUser";
+import ForgotPasswordForm from "./components/sections/AuthUser/ForgotPassword";
+import ResetPasswordForm from "./components/sections/AuthUser/ResetPassword";
 import Errorpage from "./components/pages/Errorpage";
 import Profile from './components/pages/Profile';
 // Scroll to Top
@@ -101,6 +104,8 @@ function App() {
 
             {/* Reg & Login */}
             <Route exact path="/authUser" component={AuthUser} />
+            <Route path="/forgot-password" element={<ForgotPasswordForm />} />
+            <Route path="/reset-password/:id" element={<ResetPasswordForm />} />
 
             {/* Extra */}
             <Route exact path="/error-page" component={Errorpage} />

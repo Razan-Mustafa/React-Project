@@ -297,10 +297,10 @@ export default function Content({ catId, detailId }) {
 
     const BtnClick = () => {
         Swal.fire({
-            title: 'Your Book Submitted Successfully !',
-            customClass: {
-                confirmButton: 'custom-confirm-button-class'
-            }
+            icon: "success",
+            title: "Your Book Submitted Successfully !",
+            showConfirmButton: false,
+            timer: 2500,
         }).then((result) => {
             history.push('/');
         });
