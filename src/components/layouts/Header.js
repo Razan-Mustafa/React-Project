@@ -27,6 +27,7 @@ function Header() {
     sessionStorage.removeItem('IsLoggedIn');
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('userName');
+    sessionStorage.removeItem('userImg');
     setIsLoggedIn(false);
     history.push('/');
   }

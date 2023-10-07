@@ -153,6 +153,7 @@ function SignInForm({ setIsLoggedIn }) {
         // setIsLoggedIn(true); // Update state with true, not assignment
         sessionStorage.setItem("userId", user.id);
         sessionStorage.setItem("userName", user.name);
+        sessionStorage.setItem("userImg", user.image);
         sessionStorage.setItem("IsLoggedIn", "true"); // Store as string
         Swal.fire({
           title: "Login successful!",

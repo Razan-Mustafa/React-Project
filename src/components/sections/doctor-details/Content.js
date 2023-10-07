@@ -6,28 +6,31 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Swal from "sweetalert2";
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+
 
 
 // Set 
-localStorage.setItem('userId', '1');
-localStorage.setItem('userName', 'RazanMustafa');
-localStorage.setItem('userImg', 'img (1).png');
-
-// Retrieve 
-const userId = localStorage.getItem('userId');
-const userName = localStorage.getItem('userName');
-const userImg = localStorage.getItem('userImg');
-
-
+// localStorage.setItem('userId', '1');
+// localStorage.setItem('userName', 'RazanMustafa');
+// localStorage.setItem('userImg', 'img (1).png');
 
 
 function Content({ catId, detailId }) {
 
+  const history = useHistory();
+  const IsLoggedIn = sessionStorage.getItem('IsLoggedIn');
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('IsLoggedIn') === 'true');
   const [showAllComments, setShowAllComments] = useState(false);
   const [Review, setReview] = useState([]);
   const [doctorDatafiltered, setDoctorData] = useState([]);
 
+  // Retrieve 
+  const userId = sessionStorage.getItem('userId');
+  const userName = sessionStorage.getItem('userName');
+  const userImg = sessionStorage.getItem('userImg');
+  console.log(userImg);
+  console.log(userName);
 
   // start handel add review 
   const [reviewText, setReviewText] = useState({
@@ -56,6 +59,8 @@ function Content({ catId, detailId }) {
       .then((response) => {
         if (response.status === 201) {
           const newReview = response.data;
+          // Update reviews state with the new review
+          setReview([...Review, newReview]);
           console.log('Review added successfully:', newReview);
         } else {
           console.error('Failed to add review');
@@ -65,9 +70,9 @@ function Content({ catId, detailId }) {
         console.error('Error adding review:', error);
       });
 
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userImg');
+    // localStorage.removeItem('userId');
+    // localStorage.removeItem('userName');
+    // localStorage.removeItem('userImg');
   };
 
   const BtnClick = () => {
@@ -75,10 +80,6 @@ function Content({ catId, detailId }) {
       title: 'Your Review Submitted Successfully !',
       customClass: {
         confirmButton: 'custom-confirm-button-class'
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.reload();
       }
     });
   }
@@ -90,6 +91,7 @@ function Content({ catId, detailId }) {
       .get('https://651a613f340309952f0d2f42.mockapi.io/Review')
       .then((response) => setReview(response.data))
       .catch((error) => console.error(error));
+
   };
 
 
@@ -115,7 +117,7 @@ function Content({ catId, detailId }) {
   useEffect(() => {
     getDoctorData();
     getReview();
-  }, []);
+  }, [setReviewText]);
   // end
 
 
@@ -200,90 +202,94 @@ function Content({ catId, detailId }) {
                 </div>
                 <div className="spacer"></div>
                 <div className="spacer"></div>
-                <div id="reviews">
-                  <h4>Patient Experience</h4>
-                  {/* Data */}
+                {Review.length > 0 &&
+                  <div id="reviews">
+                    <h4>Patient Experience</h4>
+                    {/* Data */}
 
-                  {Review.filter(review => review.doctorid === detailId && review.catid === catId).slice(0, showAllComments ? Review.length : 2).map(Review => (
-                    // {doctorDatafiltered.reviews.slice(0, showAllComments ? doctorDatafiltered.reviews.length : 2).map(Review => (
-                    <>
-                      <div className="sigma_testimonial style-14" key={Review.id}>
+                    {Review.filter(review => review.doctorid === detailId && review.catid === catId).slice(0, showAllComments ? Review.length : 2).map(Review => (
+                      // {doctorDatafiltered.reviews.slice(0, showAllComments ? doctorDatafiltered.reviews.length : 2).map(Review => (
+                      <>
+                        <div className="sigma_testimonial style-14" key={Review.id}>
 
-                        <div className="sigma_testimonial-thumb" key={Review.id}>
-                          <img src={process.env.PUBLIC_URL + `/assets/img/` + Review.image} alt={Review.name} />
-                        </div>
-                        <div className="sigma_testimonial-body" key={Review.id}>
-                          <div className="d-flex align-items-center justify-content-between">
-                            <div className="d-block d-sm-flex align-items-center">
-                              <div className="sigma_author-block">
-                                <h5>
-                                  {Review.name}
-                                </h5>
-                              </div>
-                              <div className="sigma_rating ml-sm-4 ml-0 mt-2 mt-sm-0">
-                                {Rating(Review.rating)}
-                                <span className="ml-3">({Review.rating}/5)</span>
-                              </div>
-                            </div>
-                            <span className="sigma_testimonial-date">{Review.commentdate}</span>
+                          <div className="sigma_testimonial-thumb" key={Review.id}>
+                            <img src={process.env.PUBLIC_URL + `/assets/img/` + Review.image} alt={Review.name} />
                           </div>
-                          <p>"{Review.comment}"</p>
+                          <div className="sigma_testimonial-body" key={Review.id}>
+                            <div className="d-flex align-items-center justify-content-between">
+                              <div className="d-block d-sm-flex align-items-center">
+                                <div className="sigma_author-block">
+                                  <h5>
+                                    {Review.name}
+                                  </h5>
+                                </div>
+                                <div className="sigma_rating ml-sm-4 ml-0 mt-2 mt-sm-0">
+                                  {Rating(Review.rating)}
+                                  <span className="ml-3">({Review.rating}/5)</span>
+                                </div>
+                              </div>
+                              <span className="sigma_testimonial-date">{Review.commentdate}</span>
+                            </div>
+                            <p>"{Review.comment}"</p>
+                          </div>
                         </div>
-                      </div>
-                    </>))}
-                  {/* Data */}
-                  {!showAllComments && (
-                    <button
-                      type="button"
-                      className="sigma_btn"
-                      onClick={() => setShowAllComments(true)}
-                    >
-                      See More
-                      <i className="fal fa-arrow-right" />
-                    </button>
-                  )}
+                      </>))}
+                    {/* Data */}
+                    {!showAllComments && (
+                      <button
+                        type="button"
+                        className="sigma_btn"
+                        onClick={() => setShowAllComments(true)}
+                      >
+                        See More
+                        <i className="fal fa-arrow-right" />
+                      </button>
+                    )}
 
-                  {showAllComments && (
-                    <button
-                      type="button"
-                      className="sigma_btn"
-                      onClick={() => setShowAllComments(false)}
-                    >
-                      See less
-                      <i className="fal fa-arrow-right" />
-                    </button>
-                  )}
-                </div>
+                    {showAllComments && (
+                      <button
+                        type="button"
+                        className="sigma_btn"
+                        onClick={() => setShowAllComments(false)}
+                      >
+                        See less
+                        <i className="fal fa-arrow-right" />
+                      </button>
+                    )}
+                  </div>
+                }
 
 
                 {/* Review form ****************************************/}
-                <div className="container">
-                  <br />
-                  <h4>Add a Review</h4>
-                  <form onSubmit={(e) => submit(e)}>
-                    <div className="form-group">
-                      <label>Rating:</label>
-                      <select id="rating" value={reviewText.rating} onChange={(e) => handleInputChange(e)}>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                      </select>
-                    </div>
-                    <div className="form-group">
-                      <label>Review:</label>
-                      <textarea
-                        rows="4"
-                        id="comment"
-                        value={reviewText.comment}
-                        onChange={(e) => handleInputChange(e)}
-                        required
-                      ></textarea>
-                    </div>
-                    <button type="submit" onClick={BtnClick}>Submit Review</button>
-                  </form>
-                </div>
+                {IsLoggedIn &&
+                  <div className="container">
+                    <br />
+                    <h4>Add a Review</h4>
+                    <form onSubmit={(e) => submit(e)}>
+                      <div className="form-group">
+                        <label>Rating:</label>
+                        <select id="rating" value={reviewText.rating} onChange={(e) => handleInputChange(e)}>
+                          <option value={1}>1</option>
+                          <option value={2}>2</option>
+                          <option value={3}>3</option>
+                          <option value={4}>4</option>
+                          <option value={5}>5</option>
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label>Review:</label>
+                        <textarea
+                          rows="4"
+                          id="comment"
+                          value={reviewText.comment}
+                          onChange={(e) => handleInputChange(e)}
+                          required
+                        ></textarea>
+                      </div>
+                      <button type="submit" onClick={BtnClick}>Submit Review</button>
+                    </form>
+                  </div>
+                }
               </div>
             </div>
           </div>

@@ -12,6 +12,7 @@ function SignUpForm({ setIsLoggedIn }) {
     name: "",
     email: "",
     password: "",
+    image: "default.jpg"
   });
 
   const [errors, setErrors] = React.useState({});
@@ -46,16 +47,16 @@ function SignUpForm({ setIsLoggedIn }) {
       "https://651be95a194f77f2a5af127c.mockapi.io/users",
       state
     );
- 
+
     // alert(`User registered successfully  ${response.data.name}`);
 
 
-     Swal.fire({
-       title: `Your registered successfully  ${response.data.name}`,
-       customClass: {
-         confirmButton: "custom-confirm-button-class",
-       },
-     });
+    Swal.fire({
+      title: `Your registered successfully  ${response.data.name}`,
+      customClass: {
+        confirmButton: "custom-confirm-button-class",
+      },
+    });
 
     setIsLoggedIn = true;
 

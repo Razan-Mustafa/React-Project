@@ -14,18 +14,6 @@ export default function Content({ catId, detailId }) {
     const [doctorAvailableTimes, setDoctorAvailableTimes] = useState([]);
     const [doctorName, setDoctorName] = useState("");
     const [doctorPrice, setDoctorPrice] = useState("");
-    // const [isOpen, setIsOpen] = useState(false)
-
-
-    // Function to calculate the next Saturday date
-    // const getNextSaturday = () => {
-    //     const currentDate = new Date();
-    //     const daysUntilSaturday = 4 - currentDate.getDay(); // Calculate days until Saturday
-    //     const nextSaturdayDate = new Date(currentDate);
-    //     nextSaturdayDate.setDate(currentDate.getDate() + daysUntilSaturday);
-    //     return nextSaturdayDate;
-    // };
-
 
     const [formData, setFormData] = useState({
         name: "",
@@ -34,7 +22,7 @@ export default function Content({ catId, detailId }) {
         gender: "",
         bookingDay: "",
         bookingTime: "",
-        date: "",
+        bookingDate: "",
         notes: ""
     });
 
@@ -44,12 +32,13 @@ export default function Content({ catId, detailId }) {
     const [gender, setGender] = useState(formData.gender);
     const [bookingDay, setBookingDay] = useState(formData.bookingDay);
     const [bookingTime, setBookingTime] = useState(formData.bookingTime);
-    const [date, setDate] = useState(formData.date);
+    const [bookingDate, setDate] = useState(formData.bookingDate);
     const [notes, setNotes] = useState(formData.notes);
     // const nextSaturday = getNextSaturday();
     // const nextSaturdayFormatted = nextSaturday.toISOString().split('T')[0];
 
     const [checkIn, setCheckIn] = useState('');
+    // setDate(checkIn);
 
     const getCurrentMonthSaturdays = () => {
         const currentDate = new Date();
@@ -162,7 +151,7 @@ export default function Content({ catId, detailId }) {
             .post(`https://651cfc0044e393af2d58f77b.mockapi.io/booking`, {
                 user_id,
                 phone,
-                date,
+                bookingDate,
                 doctorName,
                 notes,
                 bookingDay,
@@ -176,6 +165,7 @@ export default function Content({ catId, detailId }) {
         getData();
         getUserData();
         getDoctorData();
+        setDate(bookingDate);
 
         // Fetch doctor data
         axios
@@ -226,7 +216,7 @@ export default function Content({ catId, detailId }) {
             case "bookingTime":
                 setBookingTime(value);
                 break;
-            case "date":
+            case "bookingDate":
                 setDate(value);
                 break;
             case "notes":
@@ -243,7 +233,7 @@ export default function Content({ catId, detailId }) {
             gender,
             bookingDay,
             bookingTime,
-            date,
+            bookingDate,
             notes,
         });
 
@@ -324,7 +314,7 @@ export default function Content({ catId, detailId }) {
             gender: "",
             bookingDay: null,
             bookingTime: null,
-            date: "",
+            bookingDate: "",
             notes: ""
         });
 
@@ -363,7 +353,7 @@ export default function Content({ catId, detailId }) {
                                             <div className="col-lg-6">
                                                 <div className="form-group">
                                                     <i className="fal fa-phone" />
-                                                    <input type="number" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone Number" required />
+                                                    <input type="number" name="phone" onChange={handleChange} placeholder="Phone Number" required />
                                                 </div>
                                             </div>
                                         </div>
