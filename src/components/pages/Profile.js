@@ -11,9 +11,11 @@ const Profile = () => {
     const [formDatas, setFormDatas] = useState({ name: '', password: '' });
     const [loading, setLoading] = useState(true);
     const [loopData, setLoopData] = useState([]);
-    // const [userid] = useState(2);
+    const [passwordError, setPasswordError] = useState('');
+    const [nameError, setNameError] = useState(''); // Define name error state
     const [isUpdateConfirmed, setIsUpdateConfirmed] = useState(false);
     const [image, setImage] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
 
     const user_id = sessionStorage.getItem('userId');
 
@@ -41,22 +43,43 @@ const Profile = () => {
         }
     };
 
+
+    const isPasswordValid = (password) => {
+        // Customize your password validation logic here
+        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/.test(password);
+    };
+
     // Handle input changes in the form
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormDatas({ ...formDatas, [name]: value });
+        if (name === 'password') {
+            if (!isPasswordValid(value)) {
+                setPasswordError('The Password must be at least 8 characters long and contain Capital letters and numbers');
+            } else if (oldPassword !== profileData.password) {
+                setPasswordError('The Old Password is incorrect');
+            } else {
+                setPasswordError('');
+            }
+        }
     };
 
     // Handle confirmation before updating profile
     const handleConfirmUpdate = () => {
         // const userConfirmed = window.confirm('Are you sure you want to update your profile?');
         const userConfirmed = Swal.fire({
+            icon: "success",
             title: 'Your Information updated successfully',
-            customClass: {
-                confirmButton: 'custom-confirm-button-class'
-            }
+            showConfirmButton: false,
+            timer: 2500,
         });
         setIsUpdateConfirmed(userConfirmed);
+    };
+
+    const resetForm = () => {
+        setFormDatas({ name: '', password: '', oldPassword: '' });
+        setPasswordError('');
+        setNameError('');
     };
 
     // Handle form submission and update profile data
@@ -64,10 +87,15 @@ const Profile = () => {
         event.preventDefault();
 
         if (isUpdateConfirmed) {
-            // Prepare updated data
+            // Validate the form data
+            if (!isPasswordValid(formDatas.password)) {
+                // Display an error message or handle validation as needed
+                console.error('Form data is not valid.');
+                return;
+            }
             const updatedData = {
                 email: profileData.email,
-                name: formDatas.name,
+                name: formDatas.name ? formDatas.name : profileData.name,
                 password: formDatas.password,
                 image: profileData.image,
             };
@@ -77,6 +105,7 @@ const Profile = () => {
                 .put(`https://651be95a194f77f2a5af127c.mockapi.io/users/${user_id}`, updatedData)
                 .then((response) => {
                     setProfileData(updatedData);
+                    resetForm();
                     console.log('Data updated successfully:', response.data);
                     // You can add a success message or perform additional actions here
                 })
@@ -85,31 +114,50 @@ const Profile = () => {
                 });
         }
         fetchProfileData();
-
     };
+
+    function getBase64(file) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            console.log(reader.result);
+            image1 = reader.result
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    }
 
     // Handle image upload
     const handleImage = (e) => {
-        setImage(e.target.files[0]);
+        // setImage(e.target.files[0]);
+        // console.log(e.target.files[0]);
+        getBase64(e.target.files[0])
     };
 
+    let image1 = ''
+    // console.log(setImage);
     // Handle image upload to the API
     const handleApi = () => {
-        const formData = new FormData();
-        formData.append('image', image);
+        console.log(image1);
 
         // Send a PUT request to update the user's image
-        axios.put(`https://651be95a194f77f2a5af127c.mockapi.io/users/${user_id}`, formData).then((res) => {
+        axios.put(`https://651be95a194f77f2a5af127c.mockapi.io/users/${user_id}`, {
+            image: image1
+        }).then((res) => {
             console.log('Image uploaded successfully:', res);
+            setProfileData(res.data);
+
             // You can add a success message or perform additional actions here
         });
     };
-
     // Fetch initial data when the component mounts
     useEffect(() => {
         fetchBookingData();
         fetchProfileData();
-    }, []);
+    }, [passwordError]);
+
+
 
 
     return (
@@ -134,7 +182,7 @@ const Profile = () => {
                                                 alignItems: 'center',
                                             }}>
                                             <img
-                                                src={`assets/img/${profileData.image}`}
+                                                src={`${profileData.image}`}
                                                 alt={profileData.image}
                                                 style={{
                                                     maxWidth: '100%',
@@ -161,89 +209,112 @@ const Profile = () => {
                                     <div className="col-lg-12">
                                         <form id="form-create-item" className="form-border" onSubmit={handleSubmit}>
                                             <div className="de_tab tab_simple">
-
                                                 <h2>Profile</h2>
-
-
                                                 <div className="de_tab_content">
                                                     <div className="tab-1">
                                                         <div className="row">
-                                                            <div className="col-lg-6 mb20">
+                                                            <div className="col-lg-6 mb-3">
                                                                 <h5>Username</h5>
-                                                                <input type="text" name="name" id="username" className="form-control" placeholder="Enter username" value={formDatas?.name} onChange={handleInputChange} mix='30' />
-                                                            </div>
-
-                                                            <div className="col-lg-6 mb20 ">
-                                                                <h5>Enter New Password</h5>
-                                                                <input type="text" name="password" id="password" className="form-control" placeholder="Enter new password" onChange={handleInputChange} />
+                                                                <input
+                                                                    type="text"
+                                                                    name="name"
+                                                                    id="username"
+                                                                    className="form-control"
+                                                                    placeholder="Enter username"
+                                                                    value={formDatas.name}
+                                                                    onChange={handleInputChange}
+                                                                />
                                                             </div>
                                                         </div>
+                                                    </div><br></br>
 
+                                                    <div className="row">
+                                                        <div className="col-lg-6 mb-3 mt-2">
+                                                            <h5>Old Password</h5>
+                                                            <input
+                                                                type="password"
+                                                                name="oldPassword"
+                                                                id="oldPassword"
+                                                                className="form-control"
+                                                                placeholder="Enter old password"
+                                                                onChange={(e) => setOldPassword(e.target.value)}
+                                                                required
+                                                            />
+                                                        </div>
                                                     </div>
+                                                    <br></br>
+                                                    <div className="row">
 
-
+                                                        <div className="col-lg-6 mb-3 mt-2">
+                                                            <h5>New Password</h5>
+                                                            <input
+                                                                type="password"
+                                                                name="password"
+                                                                id="password"
+                                                                className="form-control"
+                                                                placeholder="Enter new password"
+                                                                value={formDatas.password}
+                                                                onChange={handleInputChange}
+                                                                required
+                                                            />
+                                                            {passwordError && <p className="text-danger">{passwordError}</p>}
+                                                        </div>
+                                                    </div>
+                                                    <input
+                                                        type="submit"
+                                                        className="btn-main mt-4 handle"
+                                                        value="Update profile"
+                                                        onClick={handleConfirmUpdate}
+                                                        style={{ padding: '10px 15px' }}
+                                                    />
                                                 </div>
                                             </div>
-
-                                            {/* <input type="submit" id="submit" className="btn-main mt-4" value="Update profile" /> */}
-                                            <input
-                                                type="submit"
-                                                className="btn-main mt-4 handle"
-                                                value="Update profile"
-                                                onClick={handleConfirmUpdate}
-                                                style={{ padding: '10px 15px', }}
-                                            />
                                         </form>
-                                        <div className="col-lg-6 mb20 mt-5">
 
-                                            <h5>Uplode Your Image</h5>
-                                            <input type="file" name="file" id="file" className="form-control" onChange={handleImage} />
-                                            <buuton className="btn mt-3 handle" onClick={handleApi}  >uplode your image</buuton>
-                                        </div>
+                                    </div>
 
+                                    <div className="col-lg-6 mb20 mt-4">
+
+                                        <h5>Uplode Your Image</h5>
+                                        <input type="file" name="file" id="file" className="form-control" onChange={handleImage} />
+                                        <buuton className="btn mt-3 handle" onClick={handleApi}  >uplode your image</buuton>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className='container pt-5'>
-                    <h4 class="">Booking  Information</h4>
-                    <table>
-                        <thead >
-                            <tr>
-                                <th scope="col">doctorName</th>
-                                <th scope="col">bookingDay</th>
-                                <th scope="col">bookingTime</th>
-                                <th scope="col">bookingDate</th>
+                </div >
 
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {loopData.map((data) => (
+                <div className="container pt-5">
+                    <h4 className="mb-4">Booking Information</h4>
+                    <div className="custom-table-container">
+                        <table className="table table-bordered">
+                            <thead className='tablepro'>
                                 <tr>
-                                    <td>{data.doctorName}</td>
-                                    <td>{data.bookingDay}</td>
-                                    <td>{data.bookingTime}</td>
-                                    <td>{data.bookingDate}</td>
+                                    <th scope="col">Doctor Name</th>
+                                    <th scope="col">Booking Day</th>
+                                    <th scope="col">Booking Time</th>
+                                    <th scope="col">Booking Date</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
-
+                            </thead>
+                            <tbody>
+                                {loopData.map((data, index) => (
+                                    <tr key={index}>
+                                        <td>{data.doctorName}</td>
+                                        <td>{data.bookingDay}</td>
+                                        <td>{data.bookingTime}</td>
+                                        <td>{data.bookingDate}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </section>
 
-
-
-
-
-
+            </section >
 
             <Footer />
-        </div>
+        </div >
     );
 };
 

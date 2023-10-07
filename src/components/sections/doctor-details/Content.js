@@ -195,7 +195,7 @@ function Content({ catId, detailId }) {
                 </div>
                 <div className="spacer"></div>
                 <div className="spacer"></div>
-                {Review.length > 0 &&
+                {reviewsFiltered.length > 0 &&
                   <div id="reviews">
                     <h4>Patient Experience</h4>
                     {/* Data */}
@@ -254,6 +254,13 @@ function Content({ catId, detailId }) {
 
 
                 {/* Review form ****************************************/}
+                {!IsLoggedIn &&
+                  <div>
+                    <br></br>
+                    <h5>To Add Review Please <Link to="/authUser"><h5 style={{ color: '#00acb1', textDecoration: 'underline' }}>
+                      Login</h5></Link></h5>
+                  </div>
+                }
                 {IsLoggedIn &&
                   <div className="container">
                     <br />

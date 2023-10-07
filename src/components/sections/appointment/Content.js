@@ -22,7 +22,7 @@ export default function Content({ catId, detailId }) {
         gender: "",
         bookingDay: "",
         bookingTime: "",
-        bookingDate: "",
+        date: "",
         notes: ""
     });
 
@@ -32,13 +32,13 @@ export default function Content({ catId, detailId }) {
     const [gender, setGender] = useState(formData.gender);
     const [bookingDay, setBookingDay] = useState(formData.bookingDay);
     const [bookingTime, setBookingTime] = useState(formData.bookingTime);
-    const [bookingDate, setDate] = useState(formData.bookingDate);
+    const [bookingDate, setBookingDate] = useState();
+    const [date, setDate] = useState(formData.date);
     const [notes, setNotes] = useState(formData.notes);
     // const nextSaturday = getNextSaturday();
     // const nextSaturdayFormatted = nextSaturday.toISOString().split('T')[0];
 
     const [checkIn, setCheckIn] = useState('');
-    // setDate(checkIn);
 
     const getCurrentMonthSaturdays = () => {
         const currentDate = new Date();
@@ -151,11 +151,11 @@ export default function Content({ catId, detailId }) {
             .post(`https://651cfc0044e393af2d58f77b.mockapi.io/booking`, {
                 user_id,
                 phone,
-                bookingDate,
                 doctorName,
                 notes,
                 bookingDay,
                 bookingTime,
+                bookingDate,
                 gender,
             })
     }
@@ -165,7 +165,6 @@ export default function Content({ catId, detailId }) {
         getData();
         getUserData();
         getDoctorData();
-        setDate(bookingDate);
 
         // Fetch doctor data
         axios
@@ -216,7 +215,7 @@ export default function Content({ catId, detailId }) {
             case "bookingTime":
                 setBookingTime(value);
                 break;
-            case "bookingDate":
+            case "date":
                 setDate(value);
                 break;
             case "notes":
@@ -233,7 +232,7 @@ export default function Content({ catId, detailId }) {
             gender,
             bookingDay,
             bookingTime,
-            bookingDate,
+            date,
             notes,
         });
 
@@ -297,10 +296,10 @@ export default function Content({ catId, detailId }) {
 
     const BtnClick = () => {
         Swal.fire({
-            title: 'Your Book Submitted Successfully !',
-            customClass: {
-                confirmButton: 'custom-confirm-button-class'
-            }
+            icon: "success",
+            title: "Your Book Submitted Successfully !",
+            showConfirmButton: false,
+            timer: 2500,
         }).then((result) => {
             history.push('/');
         });
@@ -314,7 +313,7 @@ export default function Content({ catId, detailId }) {
             gender: "",
             bookingDay: null,
             bookingTime: null,
-            bookingDate: "",
+            date: "",
             notes: ""
         });
 
@@ -405,6 +404,7 @@ export default function Content({ catId, detailId }) {
                                                         id="date-in"
                                                         onChange={(e) => {
                                                             setCheckIn(e.target.value);
+                                                            setBookingDate(e.target.value);
                                                         }}
                                                         value={checkIn}
                                                     >
@@ -450,7 +450,7 @@ export default function Content({ catId, detailId }) {
                                         <hr />
                                         <ul>
                                             <li className="d-flex align-items-center justify-content-between">
-                                                <span>Examination Cost</span>
+                                                <span>Service Price</span>
                                                 <span>{doctorPrice && doctorPrice} JOD</span>
                                             </li>
                                         </ul>

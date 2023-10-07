@@ -77,7 +77,12 @@ function Team() {
               </div>
               <div className="sigma_team-body">
                 <h5>
-                  <Link to={"/doctor-details/" + doctor.id}>{doctor.name}</Link>
+                  <Link
+                    style={{ fontSize: "20px" }}
+                    to={"/doctor-details/" + doctor.id}
+                  >
+                    {doctor.name}
+                  </Link>
                 </h5>
                 <div className="sigma_team-categories">
                   <Link

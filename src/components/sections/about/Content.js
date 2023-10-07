@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import Counter from "./Counter";
-import Team from "./Team";
 import Whyus from "./Whyus";
 import Workprocess from "./Workprocess";
 
@@ -21,7 +20,9 @@ function Content() {
         </div>
       </div>
       <div className="section pb-0 bg-gray" />
-      <Team />
+      {/* <Team /> */}
+      <br></br>
+      <br></br>
       <div className="section section-padding p-0">
         <div className="container-fluid p-0">
         </div>
