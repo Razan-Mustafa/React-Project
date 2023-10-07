@@ -40,7 +40,21 @@ function ForgotPasswordForm() {
     return (
         <div>
             <h1>Forgot Password</h1>
-
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="email"
+                    name="inputEmail"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <div>
+                    {/* <Link to=""> */}
+                    <button type="submit">Reset Password</button>
+                    {/* </Link> */}
+                </div>
+            </form>
+            <Link to="/signIn">Back to Login</Link>
         </div>
     );
 }
