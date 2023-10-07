@@ -48,13 +48,20 @@ function Contactform() {
         console.error("Request error:", error);
         setIsVerified(false); // Set to false on error
       });
-          Swal.fire({
-            title: `your  message sent successfully`,
-            customClass: {
-              confirmButton: "custom-confirm-button-class",
-            },
-          });
+        //   Swal.fire({
+        //     title: `your  message sent successfully`,
+        //     customClass: {
+        //       confirmButton: "custom-confirm-button-class",
+        //     },
+        //   });
 
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "your  message sent successfully",
+            showConfirmButton: false,
+            timer: 2500,
+          });
 
   };
 

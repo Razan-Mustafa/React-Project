@@ -1,4 +1,5 @@
-import React from "react";
+// import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import validation from './Validation'
@@ -8,14 +9,14 @@ import { Link } from "react-scroll";
 function SignUpForm({ setIsLoggedIn }) {
   const history = useHistory();
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     name: "",
     email: "",
     password: "",
+    image: "default.jpg"
   });
 
-  const [errors, setErrors] = React.useState({});
-
+  const [errors, setErrors] = useState({});
 
   const handleChange = (evt) => {
     const value = evt.target.value;
@@ -24,8 +25,6 @@ function SignUpForm({ setIsLoggedIn }) {
       [evt.target.name]: value,
     });
   };
-
-
 
   const handleOnSubmit = async (evt) => {
     evt.preventDefault();
@@ -46,16 +45,23 @@ function SignUpForm({ setIsLoggedIn }) {
       "https://651be95a194f77f2a5af127c.mockapi.io/users",
       state
     );
- 
+
     // alert(`User registered successfully  ${response.data.name}`);
 
+    Swal.fire({
+      title: `Your registered successfully ${response.data.name}`,
+      icon: "success",
+      customClass: {
+        confirmButton: "custom-confirm-button-class",
+      },
+    });
 
-     Swal.fire({
-       title: `Your registered successfully  ${response.data.name}`,
-       customClass: {
-         confirmButton: "custom-confirm-button-class",
-       },
-     });
+    //  Swal.fire({
+    //    title: `Your registered successfully  ${response.data.name}`,
+    //    customClass: {
+    //      confirmButton: "custom-confirm-button-class",
+    //    },
+    //  });
 
     setIsLoggedIn = true;
 
@@ -66,13 +72,18 @@ function SignUpForm({ setIsLoggedIn }) {
     });
     // history.goBack();
   };
+  useEffect(() => {
+    // Clear errors when the user interacts with the form
+    setErrors({});
+  }, [state]); // This effect runs whenever 'state' changes
 
   return (
     <div className="form-containers sign-up-containers">
       <form className="forms" onSubmit={handleOnSubmit}>
+     
         <h3 className="h3">Create Account</h3>
 
-        <span>or use your email for registration</span>
+        <span> use your email for registration</span>
         <input
           type="text"
           name="name"
@@ -112,3 +123,4 @@ function SignUpForm({ setIsLoggedIn }) {
 }
 
 export default SignUpForm;
+

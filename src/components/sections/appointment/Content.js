@@ -14,18 +14,6 @@ export default function Content({ catId, detailId }) {
     const [doctorAvailableTimes, setDoctorAvailableTimes] = useState([]);
     const [doctorName, setDoctorName] = useState("");
     const [doctorPrice, setDoctorPrice] = useState("");
-    // const [isOpen, setIsOpen] = useState(false)
-
-
-    // Function to calculate the next Saturday date
-    // const getNextSaturday = () => {
-    //     const currentDate = new Date();
-    //     const daysUntilSaturday = 4 - currentDate.getDay(); // Calculate days until Saturday
-    //     const nextSaturdayDate = new Date(currentDate);
-    //     nextSaturdayDate.setDate(currentDate.getDate() + daysUntilSaturday);
-    //     return nextSaturdayDate;
-    // };
-
 
     const [formData, setFormData] = useState({
         name: "",
@@ -34,7 +22,7 @@ export default function Content({ catId, detailId }) {
         gender: "",
         bookingDay: "",
         bookingTime: "",
-        date: "",
+        bookingDate: "",
         notes: ""
     });
 
@@ -44,12 +32,13 @@ export default function Content({ catId, detailId }) {
     const [gender, setGender] = useState(formData.gender);
     const [bookingDay, setBookingDay] = useState(formData.bookingDay);
     const [bookingTime, setBookingTime] = useState(formData.bookingTime);
-    const [date, setDate] = useState(formData.date);
+    const [bookingDate, setDate] = useState(formData.bookingDate);
     const [notes, setNotes] = useState(formData.notes);
     // const nextSaturday = getNextSaturday();
     // const nextSaturdayFormatted = nextSaturday.toISOString().split('T')[0];
 
     const [checkIn, setCheckIn] = useState('');
+    // setDate(checkIn);
 
     const getCurrentMonthSaturdays = () => {
         const currentDate = new Date();
@@ -65,11 +54,14 @@ export default function Content({ catId, detailId }) {
             case 'Monday':
                 startDay = 2
                 break;
+            case 'Tuesday':
+                startDay = 3
+                break;
             case 'Wednesday':
                 startDay = 4
                 break;
-            case 'Friday':
-                startDay = 6
+            case 'Thursday':
+                startDay = 5
                 break
 
             default:
@@ -129,6 +121,7 @@ export default function Content({ catId, detailId }) {
                     if (doctor) {
                         const doctorAvailableDays = doctor.availableDays;
                         setDoctorAvailableDays(doctorAvailableDays);
+                        console.log(doctorAvailableDays);
                         const doctorAvailableTimes = doctor.availableTime;
                         setDoctorAvailableTimes(doctorAvailableTimes);
                         const doctorName = doctor.name;
@@ -158,7 +151,7 @@ export default function Content({ catId, detailId }) {
             .post(`https://651cfc0044e393af2d58f77b.mockapi.io/booking`, {
                 user_id,
                 phone,
-                date,
+                bookingDate,
                 doctorName,
                 notes,
                 bookingDay,
@@ -172,6 +165,7 @@ export default function Content({ catId, detailId }) {
         getData();
         getUserData();
         getDoctorData();
+        setDate(bookingDate);
 
         // Fetch doctor data
         axios
@@ -222,7 +216,7 @@ export default function Content({ catId, detailId }) {
             case "bookingTime":
                 setBookingTime(value);
                 break;
-            case "date":
+            case "bookingDate":
                 setDate(value);
                 break;
             case "notes":
@@ -239,11 +233,12 @@ export default function Content({ catId, detailId }) {
             gender,
             bookingDay,
             bookingTime,
-            date,
+            bookingDate,
             notes,
         });
 
         const timeSlot = bookingTime;
+        const selectedDay = bookingDay;
         const updatedDoctor = {
             ...doctorData,
             doctors: doctorData.doctors.map((doc) => {
@@ -251,24 +246,29 @@ export default function Content({ catId, detailId }) {
                     return {
                         ...doc,
                         availableDays: doc.availableDays.map((day) => {
-                            return {
-                                ...day,
-                                times: day.times.map((timeSlotObj) => {
-                                    if (timeSlotObj.timeSlot === timeSlot) {
-                                        return {
-                                            ...timeSlotObj,
-                                            isBooked: true,
-                                        };
-                                    }
-                                    return timeSlotObj;
-                                }),
-                            };
+                            if (day.day === selectedDay) {
+                                return {
+                                    ...day,
+                                    times: day.times.map((timeSlotObj) => {
+                                        if (timeSlotObj.timeSlot === timeSlot) {
+                                            return {
+                                                ...timeSlotObj,
+                                                isBooked: true,
+                                            };
+                                        }
+                                        return timeSlotObj;
+                                    }),
+                                };
+                            }
+                            return day;
                         }),
                     };
                 }
                 return doc;
             }),
         };
+
+
 
         const sendIsBooked = () => {
             axios
@@ -290,6 +290,7 @@ export default function Content({ catId, detailId }) {
         console.log(formData);
         resetForm();
         sendDataToAPI();
+        BtnClick();
 
         // navigate("/");
     };
@@ -313,7 +314,7 @@ export default function Content({ catId, detailId }) {
             gender: "",
             bookingDay: null,
             bookingTime: null,
-            date: "",
+            bookingDate: "",
             notes: ""
         });
 
@@ -352,7 +353,7 @@ export default function Content({ catId, detailId }) {
                                             <div className="col-lg-6">
                                                 <div className="form-group">
                                                     <i className="fal fa-phone" />
-                                                    <input type="number" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone Number" required />
+                                                    <input type="number" name="phone" onChange={handleChange} placeholder="Phone Number" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -421,40 +422,6 @@ export default function Content({ catId, detailId }) {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* <div className="form-block mb-0">
-                                            <h4>Payment Information:</h4>
-                                            <div className="row">
-                                                <div className="col-12">
-                                                    <div className="form-group">
-                                                        <label>Name On Card</label>
-                                                        <input type="text" value={formData.cardName} onChange={this.cardName} placeholder="Dorothy Schneider" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-12">
-                                                    <div className="form-group">
-                                                        <label>Card Number</label>
-                                                        <div className="payment-card-wrapper d-block d-sm-flex align-items-center">
-                                                            <input type="text" value={formData.cardNumber} onChange={this.cardNumber} placeholder="xxxx-xxxx-xxxx-xxxx" />
-                                                            <div className="card-image">
-                                                                <img src={process.env.PUBLIC_URL + "/assets/img/book-apppointment/243x50.png"} alt="img" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label>Expiration Date</label>
-                                                        <input type="text" value={formData.expDate} onChange={this.expDate} placeholder="mm/yy" data-provide="datepicker" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label>Security Code</label>
-                                                        <input type="text" value={formData.cardCvv} onChange={this.cardCvv} placeholder="CCV" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> */}
                                 </div>
                             </div>
                             <div className="col-lg-4">
@@ -469,7 +436,7 @@ export default function Content({ catId, detailId }) {
                                             </li>
                                             <li className="d-flex align-items-center justify-content-between">
                                                 <span>Date</span>
-                                                <span>{date && date}</span>
+                                                <span>{checkIn && checkIn}</span>
                                             </li>
                                             <li className="d-flex align-items-center justify-content-between">
                                                 <span>Time</span>
@@ -495,24 +462,10 @@ export default function Content({ catId, detailId }) {
                                             </li>
                                             <li className="popup d-flex align-items-center justify-content-between">
                                                 {/* <Link to="/"> */}
-                                                <button type="submit" className="sigma_btn btn-block btn-sm mt-4" style={{ fontSize: "17px", padding: "20px 70px" }} onClick={BtnClick}>
+                                                <button type="submit" className="sigma_btn btn-block btn-sm mt-4" style={{ fontSize: "17px", padding: "20px 70px" }}>
                                                     Confirm Booking
                                                     <i className="fal fa-arrow-right ml-3" />
                                                 </button>
-                                                {/* </Link> */}
-                                                {/* {modalOpen &&
-                                                    createPortal(
-                                                        <Modal
-                                                            closeModal={handleButtonClick}
-                                                            onSubmit={handleButtonClick}
-                                                            onCancel={handleButtonClick}
-                                                        >
-                                                            <h1>This is a modal</h1>
-                                                            <br />
-                                                            <p>This is the modal description</p>
-                                                        </Modal>,
-                                                        document.body
-                                                    )} */}
                                             </li>
                                         </ul>
                                     </div>
