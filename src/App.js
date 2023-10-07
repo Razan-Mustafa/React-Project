@@ -10,9 +10,6 @@ import {
 
 import Home from "./components/pages/Home";
 
-import Blog from "./components/pages/Blog";
-import Blogstandard from "./components/pages/Blogstandard";
-import Blogdetails from "./components/pages/Blogdetails";
 import About from "./components/pages/About";
 import Services from "./components/pages/Services";
 import Servicedetails from "./components/pages/Servicedetails";
@@ -53,15 +50,6 @@ function App() {
             {/* Category */}
             <Route exact path="/all-category" component={category} />
             <Route exact path="/category/:id" component={Doctorgrid} />
-
-            {/* Blog */}
-            <Route exact path="/blog/cat/:catId" component={Blog} />
-            <Route exact path="/blog/tag/:tagId" component={Blog} />
-            <Route exact path="/blog/search/:query" component={Blog} />
-            <Route exact path="/blog/author/:authorId" component={Blog} />
-            <Route exact path="/blog" component={Blog} />
-            <Route exact path="/blog-standard" component={Blogstandard} />
-            <Route exact path="/blog-details/:id" component={Blogdetails} />
 
             {/* About */}
             <Route exact path="/about" component={About} />
@@ -104,8 +92,8 @@ function App() {
 
             {/* Reg & Login */}
             <Route exact path="/authUser" component={AuthUser} />
-            <Route path="/forgot-password" element={<ForgotPasswordForm />} />
-            <Route path="/reset-password/:id" element={<ResetPasswordForm />} />
+            <Route path="/forgot-password" component={ForgotPasswordForm} />
+            <Route path="/reset-password/:id" component={ResetPasswordForm} />
 
             {/* Extra */}
             <Route exact path="/error-page" component={Errorpage} />

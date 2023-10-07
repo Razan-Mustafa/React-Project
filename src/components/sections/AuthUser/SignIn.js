@@ -49,9 +49,8 @@ function SignInForm({ setIsLoggedIn }) {
         Swal.fire({
           icon: "success",
           title: "Login successful!",
-          customClass: {
-            confirmButton: "custom-confirm-button-class",
-          },
+          showConfirmButton: false,
+          timer: 2000,
         });
         history.goBack();
 
