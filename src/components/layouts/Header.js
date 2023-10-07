@@ -27,8 +27,9 @@ function Header() {
     sessionStorage.removeItem('IsLoggedIn');
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('userName');
+    sessionStorage.removeItem('userImg');
     setIsLoggedIn(false);
-    history.goBack();
+    history.push('/');
   }
 
   return (
@@ -72,7 +73,7 @@ function Header() {
                 <ul className="sigma_header-top-nav">
                   <li>
                     {" "}
-                    <Link to="#">
+                    <Link to="/appointment/1/1">
                       <i className="fab fa-facebook-f" />
                     </Link>
                   </li>

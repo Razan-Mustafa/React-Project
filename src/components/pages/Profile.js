@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../layouts/Header';
 import Footer from '../layouts/Footer';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
+import Swal from "sweetalert2";
 
 
 const Profile = () => {
@@ -48,7 +49,13 @@ const Profile = () => {
 
     // Handle confirmation before updating profile
     const handleConfirmUpdate = () => {
-        const userConfirmed = window.confirm('Are you sure you want to update your profile?');
+        // const userConfirmed = window.confirm('Are you sure you want to update your profile?');
+        const userConfirmed = Swal.fire({
+            title: 'Your Information updated successfully',
+            customClass: {
+                confirmButton: 'custom-confirm-button-class'
+            }
+        });
         setIsUpdateConfirmed(userConfirmed);
     };
 

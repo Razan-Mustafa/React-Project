@@ -13,6 +13,7 @@ function SignUpForm({ setIsLoggedIn }) {
     name: "",
     email: "",
     password: "",
+    image: "default.jpg"
   });
 
   const [errors, setErrors] = useState({});
