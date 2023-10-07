@@ -106,7 +106,7 @@ const Profile = () => {
                 .then((response) => {
                     setProfileData(updatedData);
                     resetForm();
-                    console.log('Data updated successfully:', response.data);
+                    // console.log('Data updated successfully:', response.data);
                     // You can add a success message or perform additional actions here
                 })
                 .catch((error) => {
@@ -115,12 +115,13 @@ const Profile = () => {
         }
         fetchProfileData();
     };
+    // console.log(profileData.image);
 
     function getBase64(file) {
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function () {
-            console.log(reader.result);
+            // console.log(reader.result);
             image1 = reader.result
         };
         reader.onerror = function (error) {
@@ -139,7 +140,7 @@ const Profile = () => {
     // console.log(setImage);
     // Handle image upload to the API
     const handleApi = () => {
-        console.log(image1);
+        // console.log(image1);
 
         // Send a PUT request to update the user's image
         axios.put(`https://651be95a194f77f2a5af127c.mockapi.io/users/${user_id}`, {
@@ -151,13 +152,21 @@ const Profile = () => {
             // You can add a success message or perform additional actions here
         });
     };
+
+    const CheckImage = () => {
+
+        if (profileData.image == "default.jpg") {
+            return "assets/img/default.jpg";
+        } else {
+            return profileData.image;
+        }
+
+    }
     // Fetch initial data when the component mounts
     useEffect(() => {
         fetchBookingData();
         fetchProfileData();
     }, [passwordError]);
-
-
 
 
     return (
@@ -182,7 +191,7 @@ const Profile = () => {
                                                 alignItems: 'center',
                                             }}>
                                             <img
-                                                src={`${profileData.image}`}
+                                                src={CheckImage()}
                                                 alt={profileData.image}
                                                 style={{
                                                     maxWidth: '100%',
