@@ -450,7 +450,7 @@ export default function Content({ catId, detailId }) {
                                         <hr />
                                         <ul>
                                             <li className="d-flex align-items-center justify-content-between">
-                                                <span>Examination Cost</span>
+                                                <span>Service Price</span>
                                                 <span>{doctorPrice && doctorPrice} JOD</span>
                                             </li>
                                         </ul>
