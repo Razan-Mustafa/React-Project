@@ -23,6 +23,7 @@ const userImg = localStorage.getItem('userImg');
 
 function Content({ catId, detailId }) {
 
+  const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('IsLoggedIn') === 'true');
   const [showAllComments, setShowAllComments] = useState(false);
   const [Review, setReview] = useState([]);
   const [doctorDatafiltered, setDoctorData] = useState([]);
@@ -327,7 +328,7 @@ function Content({ catId, detailId }) {
                       </table>
                     </div>
 
-                    <Link to={"/appointment/" + catId + "/" + detailId} className="sigma_btn btn-block btn-sm">
+                    <Link to={isLoggedIn ? `/appointment/${catId}/${detailId}` : '/authUser'} className="sigma_btn btn-block btn-sm">
                       Book Appointment
                       <i className="fal fa-arrow-right ml-3" />
                     </Link>
