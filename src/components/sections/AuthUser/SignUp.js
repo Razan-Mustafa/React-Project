@@ -36,8 +36,7 @@ function SignUpForm({ setIsLoggedIn }) {
 
     const validationErrors = validation(state); // Validate the form fields
     if (Object.keys(validationErrors).length > 0) {
-      // If there are validation errors, set them in the state
-      setErrors(validationErrors);
+       setErrors(validationErrors);
       return;
     }
 

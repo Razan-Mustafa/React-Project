@@ -36,7 +36,6 @@ function SignInForm({ setIsLoggedIn }) {
       );
 
       if (user) {
-        // alert("Login successful!");
 
 
 
