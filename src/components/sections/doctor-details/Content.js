@@ -1,24 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import { getDoctor } from '../../../helper/doctorHelper';
 import { getAuthor, Rating } from '../../../helper/helper';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Swal from "sweetalert2";
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 
 
-
-// Set 
-// localStorage.setItem('userId', '1');
-// localStorage.setItem('userName', 'RazanMustafa');
-// localStorage.setItem('userImg', 'img (1).png');
 
 
 function Content({ catId, detailId }) {
 
-  const history = useHistory();
   const IsLoggedIn = sessionStorage.getItem('IsLoggedIn');
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('IsLoggedIn') === 'true');
   const [showAllComments, setShowAllComments] = useState(false);
@@ -171,7 +163,7 @@ function Content({ catId, detailId }) {
                           </span>
                           <span>
                             <i className="fal fa-money-bill" />
-                            Service Price :{doctorDatafiltered.price}
+                            Service Price :{doctorDatafiltered.price} JOD
                           </span>
 
                         </div>

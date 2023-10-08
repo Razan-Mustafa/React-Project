@@ -106,7 +106,7 @@ const Profile = () => {
                 .then((response) => {
                     setProfileData(updatedData);
                     resetForm();
-                    console.log('Data updated successfully:', response.data);
+                    // console.log('Data updated successfully:', response.data);
                     // You can add a success message or perform additional actions here
                 })
                 .catch((error) => {
@@ -115,12 +115,13 @@ const Profile = () => {
         }
         fetchProfileData();
     };
+    // console.log(profileData.image);
 
     function getBase64(file) {
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function () {
-            console.log(reader.result);
+            // console.log(reader.result);
             image1 = reader.result
         };
         reader.onerror = function (error) {
@@ -139,7 +140,7 @@ const Profile = () => {
     // console.log(setImage);
     // Handle image upload to the API
     const handleApi = () => {
-        console.log(image1);
+        // console.log(image1);
 
         // Send a PUT request to update the user's image
         axios.put(`https://651be95a194f77f2a5af127c.mockapi.io/users/${user_id}`, {
@@ -149,15 +150,31 @@ const Profile = () => {
             setProfileData(res.data);
 
             // You can add a success message or perform additional actions here
+        }).catch((err) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Image is too big',
+                showConfirmButton: false,
+                timer: 2500,
+            });
         });
     };
+
+    const CheckImage = () => {
+
+        if (profileData.image == "default.jpg") {
+            return "assets/img/default.jpg";
+        } else {
+            return profileData.image;
+        }
+
+    }
     // Fetch initial data when the component mounts
     useEffect(() => {
         fetchBookingData();
         fetchProfileData();
     }, [passwordError]);
-
-
 
 
     return (
@@ -182,7 +199,7 @@ const Profile = () => {
                                                 alignItems: 'center',
                                             }}>
                                             <img
-                                                src={`${profileData.image}`}
+                                                src={CheckImage()}
                                                 alt={profileData.image}
                                                 style={{
                                                     maxWidth: '100%',
@@ -276,8 +293,8 @@ const Profile = () => {
                                     <div className="col-lg-6 mb20 mt-4">
 
                                         <h5>Uplode Your Image</h5>
-                                        <input type="file" name="file" id="file" className="form-control" onChange={handleImage} />
-                                        <buuton className="btn mt-3 handle" onClick={handleApi}  >uplode your image</buuton>
+                                        <input accept="image/*" type="file" name="file" id="file" className="form-control" onChange={handleImage} />
+                                        <button className="btn mt-3 handle" onClick={handleApi}  >uplode your image</button>
                                     </div>
                                 </div>
                             </div>
@@ -285,31 +302,33 @@ const Profile = () => {
                     </div>
                 </div >
 
-                <div className="container pt-5">
-                    <h4 className="mb-4">Booking Information</h4>
-                    <div className="custom-table-container">
-                        <table className="table table-bordered">
-                            <thead className='tablepro'>
-                                <tr>
-                                    <th scope="col">Doctor Name</th>
-                                    <th scope="col">Booking Day</th>
-                                    <th scope="col">Booking Time</th>
-                                    <th scope="col">Booking Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {loopData.map((data, index) => (
-                                    <tr key={index}>
-                                        <td>{data.doctorName}</td>
-                                        <td>{data.bookingDay}</td>
-                                        <td>{data.bookingTime}</td>
-                                        <td>{data.bookingDate}</td>
+                {loopData.length > 0 &&
+                    <div className="container pt-5">
+                        <h4 className="mb-4">Booking Information</h4>
+                        <div className="custom-table-container">
+                            <table className="table table-bordered">
+                                <thead className='tablepro'>
+                                    <tr>
+                                        <th scope="col">Doctor Name</th>
+                                        <th scope="col">Booking Day</th>
+                                        <th scope="col">Booking Time</th>
+                                        <th scope="col">Booking Date</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {loopData.map((data, index) => (
+                                        <tr key={index}>
+                                            <td>{data.doctorName}</td>
+                                            <td>{data.bookingDay}</td>
+                                            <td>{data.bookingTime}</td>
+                                            <td>{data.bookingDate}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                }
 
             </section >
 
