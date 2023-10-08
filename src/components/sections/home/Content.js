@@ -12,6 +12,7 @@ function Content() {
   return (
     <Fragment>
       <Banner />
+      <Workprocess />
       {/* <Searchform /> */}
       <div className="section section-padding bg-gray">
         <div className="container">
@@ -38,7 +39,7 @@ function Content() {
       <Services />
 
       {/* <div className="section section-padding" /> */}
-      <Workprocess />
+
       <Team />
       <Testimonials />
       <div className="container-fluid p-0"></div>
