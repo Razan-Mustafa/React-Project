@@ -70,32 +70,34 @@ const ResetPasswordForm = () => {
         fetchUserById(id)
     }, []);
     return (
-        <div className="containers forms" style={{ paddingTop: '5%' }}>
-            {/* <p>Current Password: {currentPassword}</p> */}
-            <h3>Reset Password</h3>
+        <center>
+            <div className="containers forms" style={{ paddingTop: '5%', width: '30%', margin: '0px', marginTop: '5%' }}>
+                {/* <p>Current Password: {currentPassword}</p> */}
+                <h3>Reset Password</h3>
 
-            <label htmlFor="password">New Password:</label>
-            <input
-                className="inputs"
-                type="password"
-                id="password"
-                value={password}
-                onChange={handlePasswordChange}
-            />
-            <br />
+                <label htmlFor="password">New Password:</label>
+                <input
+                    style={{ border: '1px solid #00cab1' }}
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                />
+                <br />
 
-            <label htmlFor="confirmPassword">Confirm Password:</label>
-            <input
-                className="inputs"
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
-            />
-            <br />
+                <label htmlFor="confirmPassword">Confirm Password:</label>
+                <input
+                    style={{ border: '1px solid #00cab1' }}
+                    type="password"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
+                />
+                <br />
 
-            <button onClick={() => handleResetPassword(id)}>Reset Password</button>
-        </div>
+                <button onClick={() => handleResetPassword(id)}>Reset Password</button>
+            </div>
+        </center>
     );
 };
 
