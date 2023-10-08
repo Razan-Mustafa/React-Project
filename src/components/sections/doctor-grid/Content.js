@@ -47,7 +47,7 @@ function CategoryPage({ catId }) {
     selectedLocation
   );
 
-  const locationOptions = ["All", "irbid", "amman", "zarqa"];
+  const locationOptions = ["All", "Irbid", "Amman", "Zarqa"];
 
   return (
     <div className="sidebar-style-9">
@@ -104,7 +104,10 @@ function CategoryPage({ catId }) {
                             </div>
                             <div className="sigma_team-body">
                               <h5>
-                                <Link to={"/doctor-details/" + doctor.id}>
+                                <Link
+                                  style={{ fontSize: "20px" }}
+                                  to={"/doctor-details/" + doctor.id}
+                                >
                                   {doctor.name}
                                 </Link>
                               </h5>

@@ -26,19 +26,20 @@ function Categories() {
           <div className="sigma_service style-17">
             <div className="sigma_service-thumb">
               <img
-                src={
-                  process.env.PUBLIC_URL +
-                  "/assets/img/" +
-                  category.image 
-                  
-                }
+                src={process.env.PUBLIC_URL + "/assets/img/" + category.image}
                 alt={category.image}
               />
             </div>
             <div className="sigma_service-body">
               <h5>
-                <Link to={"/category/" + category.id}>{category.name}</Link>
+                <Link
+                  to={"/category/" + category.id}
+                  style={{ fontSize: "20px" }}
+                >
+                  {category.name}
+                </Link>{" "}
               </h5>
+
               <p>{category.description}</p>
               <Link
                 to={"/category/" + category.id}
