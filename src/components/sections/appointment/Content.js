@@ -67,7 +67,7 @@ export default function Content({ catId, detailId }) {
             default:
                 break;
         }
-        for (let day = currentDay; day <= 31; day++) {
+        for (let day = currentDay + 5; day <= 31; day++) {
             const date = new Date(currentYear, currentMonth, day);
             if (date.getDay() === startDay && date.getMonth() === currentMonth) {
                 saturdays.push(date.toISOString().split('T')[0]);

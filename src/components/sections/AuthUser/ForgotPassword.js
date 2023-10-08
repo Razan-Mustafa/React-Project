@@ -35,30 +35,30 @@ function ForgotPasswordForm() {
     };
 
 
-    return (
-        <div className="containers" style={{ paddingTop: '15%' }}>
-            <center>
-                <h3>Forgot Password</h3>
-                <form className="forms" onSubmit={handleSubmit}>
-                    <input
-                        className="inputs"
-                        type="email"
-                        name="inputEmail"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <div>
-                        <br>
-                        </br>
-                        {/* <Link to=""> */}
-                        <button type="submit" className="buttons">Reset Password</button>
-                        {/* </Link> */}
-                    </div>
-                </form>
-                <Link to="/signIn">Back to Login</Link>
-            </center>
-        </div>
+    return (<center>
+        <div className="containers" style={{ paddingTop: '5%', width: '30%', margin: '0px', marginTop: '5%' }}>
+
+            <h3>Forgot Password</h3>
+            <form className="forms" onSubmit={handleSubmit}>
+                <input
+                    style={{ border: '1px solid #00cab1' }}
+                    type="email"
+                    name="inputEmail"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <div>
+                    <br>
+                    </br>
+                    {/* <Link to=""> */}
+                    <button type="submit" className="buttons">Reset Password</button>
+                    {/* </Link> */}
+                </div>
+            </form>
+            <Link to="/signIn">Back to Login</Link>
+
+        </div> </center>
     );
 }
 
