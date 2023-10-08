@@ -104,8 +104,8 @@ function App() {
 
             {/* Reg & Login */}
             <Route exact path="/authUser" component={AuthUser} />
-            <Route path="/forgot-password" element={<ForgotPasswordForm />} />
-            <Route path="/reset-password/:id" element={<ResetPasswordForm />} />
+            <Route path="/forgot-password" component={ForgotPasswordForm } />
+            <Route path="/reset-password/:id" component={ResetPasswordForm } />
 
             {/* Extra */}
             <Route exact path="/error-page" component={Errorpage} />
