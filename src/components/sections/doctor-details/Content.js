@@ -11,13 +11,13 @@ import axios from 'axios';
 
 function Content({ catId, detailId }) {
 
-  const IsLoggedIn = sessionStorage.getItem('IsLoggedIn');
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('IsLoggedIn') === 'true');
   const [showAllComments, setShowAllComments] = useState(false);
   const [Review, setReview] = useState([]);
   const [doctorDatafiltered, setDoctorData] = useState([]);
 
-  // Retrieve 
+  // Retrieve session storage
+  const IsLoggedIn = sessionStorage.getItem('IsLoggedIn');
   const userId = sessionStorage.getItem('userId');
   const userName = sessionStorage.getItem('userName');
   const userImg = sessionStorage.getItem('userImg');
