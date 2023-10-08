@@ -21,8 +21,8 @@ function Content({ catId, detailId }) {
   const userId = sessionStorage.getItem('userId');
   const userName = sessionStorage.getItem('userName');
   const userImg = sessionStorage.getItem('userImg');
-  console.log(userImg);
-  console.log(userName);
+  // console.log(userImg);
+  // console.log(userName);
 
   // start handel add review 
   const [reviewText, setReviewText] = useState({
