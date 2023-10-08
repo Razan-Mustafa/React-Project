@@ -5,11 +5,6 @@
     "link": "/"
   },
   {
-    "id": 2,
-    "linkText": "Blog",
-    "link": "/blog"
-  },
-  {
     "id": 3,
     "linkText": "Services",
     "link": "/services"

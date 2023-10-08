@@ -1,31 +1,23 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import { getDoctor } from '../../../helper/doctorHelper';
 import { getAuthor, Rating } from '../../../helper/helper';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Swal from "sweetalert2";
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 
 
-
-// Set 
-// localStorage.setItem('userId', '1');
-// localStorage.setItem('userName', 'RazanMustafa');
-// localStorage.setItem('userImg', 'img (1).png');
 
 
 function Content({ catId, detailId }) {
 
-  const history = useHistory();
-  const IsLoggedIn = sessionStorage.getItem('IsLoggedIn');
   const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('IsLoggedIn') === 'true');
   const [showAllComments, setShowAllComments] = useState(false);
   const [Review, setReview] = useState([]);
   const [doctorDatafiltered, setDoctorData] = useState([]);
 
-  // Retrieve 
+  // Retrieve session storage
+  const IsLoggedIn = sessionStorage.getItem('IsLoggedIn');
   const userId = sessionStorage.getItem('userId');
   const userName = sessionStorage.getItem('userName');
   const userImg = sessionStorage.getItem('userImg');
@@ -171,7 +163,7 @@ function Content({ catId, detailId }) {
                           </span>
                           <span>
                             <i className="fal fa-money-bill" />
-                            Service Price :{doctorDatafiltered.price}
+                            Service Price :{doctorDatafiltered.price} JOD
                           </span>
 
                         </div>
@@ -200,7 +192,7 @@ function Content({ catId, detailId }) {
                 </div>
                 <div className="spacer"></div>
                 <div className="spacer"></div>
-                {Review.length > 0 &&
+                {reviewsFiltered.length > 0 &&
                   <div id="reviews">
                     <h4>Patient Experience</h4>
                     {/* Data */}
@@ -259,6 +251,13 @@ function Content({ catId, detailId }) {
 
 
                 {/* Review form ****************************************/}
+                {!IsLoggedIn &&
+                  <div>
+                    <br></br>
+                    <h5>To Add Review Please <Link to="/authUser"><h5 style={{ color: '#00acb1', textDecoration: 'underline' }}>
+                      Login</h5></Link></h5>
+                  </div>
+                }
                 {IsLoggedIn &&
                   <div className="container">
                     <br />

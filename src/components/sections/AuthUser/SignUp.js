@@ -36,8 +36,7 @@ function SignUpForm({ setIsLoggedIn }) {
 
     const validationErrors = validation(state); // Validate the form fields
     if (Object.keys(validationErrors).length > 0) {
-      // If there are validation errors, set them in the state
-      setErrors(validationErrors);
+       setErrors(validationErrors);
       return;
     }
 
@@ -51,9 +50,8 @@ function SignUpForm({ setIsLoggedIn }) {
     Swal.fire({
       title: `Your registered successfully ${response.data.name}`,
       icon: "success",
-      customClass: {
-        confirmButton: "custom-confirm-button-class",
-      },
+      showConfirmButton: false,
+      timer: 2000,
     });
 
     //  Swal.fire({
@@ -80,7 +78,7 @@ function SignUpForm({ setIsLoggedIn }) {
   return (
     <div className="form-containers sign-up-containers">
       <form className="forms" onSubmit={handleOnSubmit}>
-     
+
         <h3 className="h3">Create Account</h3>
 
         <span> use your email for registration</span>

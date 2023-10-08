@@ -47,7 +47,7 @@ function CategoryPage({ catId }) {
     selectedLocation
   );
 
-  const locationOptions = ["All", "irbid", "amman", "zarqa"];
+  const locationOptions = ["All", "Irbid", "Amman", "Zarqa"];
 
   return (
     <div className="sidebar-style-9">

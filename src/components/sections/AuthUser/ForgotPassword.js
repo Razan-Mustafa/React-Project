@@ -29,19 +29,19 @@ function ForgotPasswordForm() {
         if (userId) {
             console.log("User ID:", userId);
             history.push(`/reset-password/${userId}`);
-
-            // history.push(`/reset-password?id=${userId}`);
         } else {
             alert('Email not found. Please enter a valid email.');
         }
     };
 
 
-    return (
-        <div>
-            <h1>Forgot Password</h1>
-            <form onSubmit={handleSubmit}>
+    return (<center>
+        <div className="containers" style={{ paddingTop: '5%', width: '30%', margin: '0px', marginTop: '5%' }}>
+
+            <h3>Forgot Password</h3>
+            <form className="forms" onSubmit={handleSubmit}>
                 <input
+                    style={{ border: '1px solid #00cab1' }}
                     type="email"
                     name="inputEmail"
                     placeholder="Enter your email"
@@ -49,13 +49,16 @@ function ForgotPasswordForm() {
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <div>
+                    <br>
+                    </br>
                     {/* <Link to=""> */}
-                    <button type="submit">Reset Password</button>
+                    <button type="submit" className="buttons">Reset Password</button>
                     {/* </Link> */}
                 </div>
             </form>
             <Link to="/signIn">Back to Login</Link>
-        </div>
+
+        </div> </center>
     );
 }
 
